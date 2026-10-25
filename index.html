@@ -89,6 +89,9 @@ body[data-anim=minimal] .rv,body[data-anim=subtle] .rv{transition:opacity .6s ea
 body[data-anim=subtle] .cd{transition:transform .25s}body[data-anim=subtle] .cd:hover{transform:translateY(-4px)}
 body[data-anim=subtle] #gal img{transition:transform .4s}body[data-anim=subtle] #gal figure:hover img{transform:scale(1.05)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.rv{opacity:1!important;transform:none!important}}
+
+/* CONTACT CHAT */
+.contact-chat{position:fixed;right:20px;bottom:20px;z-index:35;font-family:Inter,system-ui,sans-serif}.chat-toggle{border:0;border-radius:999px;padding:13px 20px;background:linear-gradient(90deg,var(--g1),var(--g2));color:#fff;font:600 15px Inter,system-ui,sans-serif;box-shadow:0 5px 20px #0003;cursor:pointer}.chat-panel{position:absolute;right:0;bottom:62px;width:min(360px,calc(100vw - 32px));background:var(--card);color:var(--tx);border:1px solid var(--ln);border-radius:16px;box-shadow:0 12px 36px #0003;overflow:hidden}.chat-panel[hidden]{display:none}.chat-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:linear-gradient(90deg,var(--g1),var(--g2));color:#fff}.chat-head strong{font-size:15px}.chat-close{border:0;background:transparent;color:#fff;font-size:24px;line-height:1;cursor:pointer}.chat-messages{height:230px;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:9px}.chat-bubble{max-width:88%;padding:9px 12px;border-radius:13px;font-size:14px;line-height:1.45;overflow-wrap:anywhere}.chat-bubble.bot{align-self:flex-start;background:var(--bg);border:1px solid var(--ln)}.chat-bubble.visitor{align-self:flex-end;background:linear-gradient(90deg,var(--g1),var(--g2));color:#fff}.chat-options{display:flex;flex-wrap:wrap;gap:7px;padding:0 14px 12px}.chat-options button{border:1px solid var(--ln);border-radius:999px;background:var(--card);color:var(--tx);padding:7px 10px;font:500 12px Inter,system-ui,sans-serif;cursor:pointer}.chat-form{display:flex;gap:7px;padding:0 14px 12px}.chat-form input{min-width:0;flex:1;padding:10px;border:1px solid var(--ln);border-radius:8px;background:var(--bg);color:var(--tx);font:14px Inter,system-ui,sans-serif}.chat-form button,.chat-whatsapp{border:0;border-radius:8px;background:var(--a);color:#1b2233;padding:9px 12px;font:600 13px Inter,system-ui,sans-serif;cursor:pointer}.chat-whatsapp{display:block;width:calc(100% - 28px);margin:0 14px 8px;background:#168b50;color:#fff}.chat-note{margin:0;padding:0 14px 14px;color:var(--mu);font-size:11px;line-height:1.4}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}body.admin .contact-chat{bottom:88px}@media(max-width:480px){.contact-chat{right:14px;bottom:14px}.chat-panel{position:fixed;right:14px;bottom:76px}}
 </style>
 </head>
 <body data-theme="sunset" data-mode="dark" data-anim="minimal" class="">
@@ -145,6 +148,22 @@ body[data-anim=subtle] #gal img{transition:transform .4s}body[data-anim=subtle] 
 <footer><div class="w"><span>© <span id="yr">2026</span> ASP Groups, Salem. All rights reserved.</span><button class="lk" id="al">Admin login</button></div></footer>
 
 <div class="ab"><button class="btn o" style="background:var(--card);color:var(--tx)" id="ap">Admin panel</button><button class="btn" id="lo">Log out</button></div>
+
+<div class="contact-chat" id="contact-chat">
+  <button class="chat-toggle" id="chat-toggle" type="button" aria-expanded="false" aria-controls="chat-panel">Chat with ASP</button>
+  <section class="chat-panel" id="chat-panel" aria-label="ASP Groups chat assistant" hidden>
+    <div class="chat-head"><strong>ASP Groups assistant</strong><button class="chat-close" id="chat-close" type="button" aria-label="Close chat">&times;</button></div>
+    <div class="chat-messages" id="chat-messages" role="log" aria-live="polite"></div>
+    <div class="chat-options" id="chat-options">
+      <button type="button" data-chat-topic="audit">Audit &amp; tax</button>
+      <button type="button" data-chat-topic="software">Software &amp; apps</button>
+      <button type="button" data-chat-topic="person">Contact a person</button>
+    </div>
+    <form class="chat-form" id="chat-form"><label class="sr-only" for="chat-input">Your message</label><input id="chat-input" type="text" maxlength="500" placeholder="Type your message…" autocomplete="off" required><button type="submit">Add</button></form>
+    <button class="chat-whatsapp" id="chat-whatsapp" type="button" disabled>Send message to ASP</button>
+    <p class="chat-note">Your message opens in WhatsApp. Press Send there to contact our team.</p>
+  </section>
+</div>
 
 <dialog id="dl"><h3>Admin login</h3>
 <label>Username</label><input type="text" id="u" autocomplete="username">
@@ -220,6 +239,16 @@ $('#fi').onchange=async e=>{$('#ms').textContent='Importing…';for(const f of e
 $('#sv').onclick=()=>{const m=$('#ms');try{localStorage.setItem('asp_draft',JSON.stringify(S))}catch(e){}
 const c=document.documentElement.cloneNode(true);c.querySelector('#state').textContent=JSON.stringify(S).replace(/</g,'\\u003c');c.querySelector('#gal').innerHTML='';c.querySelector('#hv').innerHTML='';c.querySelector('body').className='';c.querySelectorAll('dialog').forEach(d=>d.removeAttribute('open'));c.querySelectorAll('.rv').forEach(x=>x.classList.remove('in'));c.querySelectorAll('.view,nav a').forEach(x=>x.classList.remove('on'));
 const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['<!DOCTYPE html>\n'+c.outerHTML],{type:'text/html'}));a.download='index.html';a.click();m.style.color='';m.textContent='Downloaded index.html. Upload it to GitHub (replace the old one) to publish your changes.'};
+
+const chatMessages=[];
+const chatLog=$('#chat-messages');
+function chatBubble(text,who){const d=document.createElement('div');d.className='chat-bubble '+who;d.textContent=text;chatLog.appendChild(d);chatLog.scrollTop=chatLog.scrollHeight}
+function chatWelcome(){if(!chatLog.childElementCount)chatBubble('Hi! I’m the ASP Groups assistant. What can I help you with?', 'bot')}
+$('#chat-toggle').onclick=()=>{const p=$('#chat-panel'),open=p.hidden;p.hidden=!open;$('#chat-toggle').setAttribute('aria-expanded',String(open));if(open){chatWelcome();$('#chat-input').focus()}};
+$('#chat-close').onclick=()=>{$('#chat-panel').hidden=true;$('#chat-toggle').setAttribute('aria-expanded','false');$('#chat-toggle').focus()};
+$('#chat-options').onclick=e=>{const b=e.target.closest('[data-chat-topic]');if(!b)return;const topic=b.dataset.chatTopic;chatBubble(b.textContent,'visitor');const replies={audit:'ASP & Auditors helps with audit, taxation, GST, accounting and compliance. Tell us what you need and we’ll connect you with the team.',software:'ASP Tech Solutions builds business software, websites, mobile apps and document tools. Tell us about your project and we’ll connect you with the team.',person:'Sure. Type a short message below, then choose “Send message to ASP” to open WhatsApp.'};chatBubble(replies[topic],'bot')};
+$('#chat-form').onsubmit=e=>{e.preventDefault();const input=$('#chat-input'),value=input.value.trim();if(!value)return;chatMessages.push(value);chatBubble(value,'visitor');chatBubble('Thanks! Your message is ready. Choose “Send message to ASP” to contact our team in WhatsApp.','bot');input.value='';$('#chat-whatsapp').disabled=false};
+$('#chat-whatsapp').onclick=()=>{if(!chatMessages.length)return;let phone=(S.phone||'').replace(/\\D/g,'');if(phone.length===10)phone='91'+phone;if(!phone){chatBubble('Please use the phone or email listed on our Contact page.','bot');return}const text='Hello ASP Groups, I have a question about your services.\\n\\n'+chatMessages.join('\\n');window.open('https://wa.me/'+phone+'?text='+encodeURIComponent(text),'_blank','noopener,noreferrer')};
 apply();go(location.hash.slice(1));if(sessionStorage.getItem('asp_admin'))setAdmin(true);
 </script>
 
