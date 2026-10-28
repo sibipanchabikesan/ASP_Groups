@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Shop | ASP Groups</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Rajdhani:wght@600;700&display=swap"><link rel="stylesheet" href="style.css"></head><body>
+<div id="ann" class="ann" hidden></div>
+<header><div class="w bar"><a class="logo" href="index.html" id="nm">ASP <b>GROUPS</b></a><a href="tech.html">Services</a><button class="btn" id="cb">Cart (<span id="cn">0</span>)</button></div></header>
+<main class="w"><div class="tools"><input id="q" type="search" placeholder="Search products" aria-label="Search products"><select id="so" aria-label="Sort"><option value="">Featured</option><option value="a">Price: low to high</option><option value="d">Price: high to low</option><option value="n">Name A–Z</option></select></div>
+<div class="chips" id="ch"></div><div class="grid" id="gr"></div></main>
+<dialog id="dg"><h2>Your cart</h2><div id="ci"></div><div class="row"><b>Total</b><b id="tt"></b></div>
+<label for="n">Name</label><input id="n" autocomplete="name"><label for="p">Phone / WhatsApp</label><input id="p" type="tel" autocomplete="tel"><label for="a">Delivery address</label><textarea id="a" rows="3" autocomplete="street-address"></textarea><label for="o">Notes</label><input id="o">
+<p class="note">No payment is taken online. We confirm price, stock and delivery by phone before the order is accepted. Items marked “Quote” are excluded from the total.</p><p id="er" style="color:#fca5a5;margin:0"></p>
+<p style="display:flex;gap:8px;justify-content:flex-end"><button class="btn g" id="cl">Close</button><button class="btn" id="po">Place order</button></p></dialog>
+<dialog id="ok"><h2>Order placed</h2><p>Your order number is <b id="oid"></b>. We will call you to confirm.</p><p style="display:flex;gap:8px;justify-content:flex-end"><a class="btn g" id="wa" target="_blank" rel="noopener">Send on WhatsApp</a><button class="btn" onclick="ok.close()">Done</button></p></dialog>
+<script type="module">
+import*as S from './store.js';
+const $=i=>document.getElementById(i),e=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),inr=n=>'₹'+Number(n).toLocaleString('en-IN');
+let P=[],C={},cat='',cart=JSON.parse(localStorage.getItem('asp_cart')||'{}');
+const save=()=>{localStorage.setItem('asp_cart',JSON.stringify(cart));$('cn').textContent=Object.values(cart).reduce((a,b)=>a+b,0)};
+const lim=p=>typeof p.stock==='number'?p.stock:99;
+function draw(){const q=$('q').value.toLowerCase(),s=$('so').value;let a=P.filter(p=>(!cat||p.category===cat)&&(p.name+p.category+(p.description||'')).toLowerCase().includes(q));
+ if(s==='a')a.sort((x,y)=>x.price-y.price);if(s==='d')a.sort((x,y)=>y.price-x.price);if(s==='n')a.sort((x,y)=>x.name.localeCompare(y.name));
+ $('gr').innerHTML=a.length?a.map(p=>`<article class="card">${p.mrp>p.price&&p.price>0?`<span class="off">${Math.round(100-p.price*100/p.mrp)}% off</span>`:''}<img src="${e(p.image||'assets/pc-building.jpg')}" alt="${e(p.name)}" loading="lazy" onerror="this.src='assets/pc-building.jpg'"><div class="b"><h3>${e(p.name)}</h3><p>${e(p.description)}</p><div class="pr">${p.price>0?inr(p.price)+(p.mrp>p.price?`<s>${inr(p.mrp)}</s>`:''):'Quote'}</div>${lim(p)<1?'<span class="out">Out of stock</span>':''}<button class="btn" data-a="${e(p.id)}" ${lim(p)<1?'disabled':''}>Add to cart</button></div></article>`).join(''):'<p>No products match. Try another search or category.</p>';
+ document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const p=P.find(x=>x.id===b.dataset.a);cart[p.id]=Math.min((cart[p.id]||0)+1,lim(p));save();b.textContent='Added ✓';setTimeout(()=>b.textContent='Add to cart',900)})}
+function chips(){const c=['',...new Set(P.map(p=>p.category))];$('ch').innerHTML=c.map(x=>`<button class="chip ${x===cat?'on':''}" data-c="${e(x)}">${e(x||'All')}</button>`).join('');document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{cat=b.dataset.c;chips();draw()})}
+const rows=()=>P.filter(p=>cart[p.id]),total=()=>rows().reduce((t,p)=>t+p.price*cart[p.id],0);
+function drawCart(){$('ci').innerHTML=rows().map(p=>`<div class="row"><div>${e(p.name)}<br><small>${p.price>0?inr(p.price):'Quote'}</small></div><div><button class="btn g" data-m="${e(p.id)}">−</button> ${cart[p.id]} <button class="btn g" data-p="${e(p.id)}">+</button></div></div>`).join('')||'<p>Your cart is empty.</p>';$('tt').textContent=inr(total());
+ document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{if(--cart[b.dataset.m]<1)delete cart[b.dataset.m];save();drawCart()});document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const p=P.find(x=>x.id===b.dataset.p);cart[p.id]=Math.min(cart[p.id]+1,lim(p));save();drawCart()})}
+$('cb').onclick=()=>{drawCart();$('er').textContent='';dg.showModal()};$('cl').onclick=()=>dg.close();$('q').oninput=draw;$('so').onchange=draw;
+$('po').onclick=async()=>{const r=rows(),n=$('n').value.trim(),p=$('p').value.replace(/\D/g,''),a=$('a').value.trim();
+ if(C.open===false)return $('er').textContent='Orders are paused right now. Please call us.';if(!r.length)return $('er').textContent='Add a product first.';if(!n||p.length<10||!a)return $('er').textContent='Enter your name, a 10-digit phone number and a delivery address.';
+ const o={id:'ASP'+Date.now().toString(36).toUpperCase(),created:Date.now(),status:'New',name:n,phone:p,address:a,notes:$('o').value.trim(),items:r.map(x=>({id:x.id,name:x.name,price:x.price,qty:cart[x.id]})),total:total()};
+ $('po').disabled=true;try{await S.placeOrder(o)}catch(x){$('po').disabled=false;return $('er').textContent='Could not place the order. Check your connection and try again.'}
+ const m='Order '+o.id+'\n'+o.items.map(i=>i.name+' x'+i.qty).join('\n')+'\nTotal: '+inr(o.total)+'\n'+n+' · '+p;$('wa').href='https://wa.me/'+(C.whatsapp||'919488241710')+'?text='+encodeURIComponent(m);
+ cart={};save();$('po').disabled=false;dg.close();$('oid').textContent=o.id;ok.showModal()};
+(async()=>{C=await S.settings();P=(await S.products()).filter(p=>p.active!==false);
+ if(C.shopName)$('nm').textContent=C.shopName;if(C.accent)document.documentElement.style.setProperty('--ac',C.accent);if(C.banner){$('ann').textContent=C.banner;$('ann').hidden=false}
+ save();chips();draw()})();
+</script></body></html>
