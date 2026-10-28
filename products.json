@@ -1,0 +1,74 @@
+[
+  {
+    "id": "pc-office",
+    "name": "Budget Office PC",
+    "category": "PC Builds",
+    "price": 0,
+    "description": "A practical office desktop configured to your needs and budget. Request a current component list and quote.",
+    "image": "assets/pc-building.jpg"
+  },
+  {
+    "id": "pc-home",
+    "name": "Study & Home PC",
+    "category": "PC Builds",
+    "price": 0,
+    "description": "A custom PC enquiry for study, browsing and home use. Final specification and price confirmed first.",
+    "image": "assets/pc-building.jpg"
+  },
+  {
+    "id": "pc-gaming",
+    "name": "Entry Gaming PC",
+    "category": "PC Builds",
+    "price": 0,
+    "description": "Tell us your games and budget and we’ll suggest a compatible entry-level configuration.",
+    "image": "assets/pc-building.jpg"
+  },
+  {
+    "id": "pc-repair",
+    "name": "PC Repair & Troubleshooting",
+    "category": "Services",
+    "price": 0,
+    "description": "Request diagnosis for common PC hardware and software issues.",
+    "image": "assets/pc-building.jpg"
+  },
+  {
+    "id": "software",
+    "name": "Software & OS Installation",
+    "category": "Services",
+    "price": 0,
+    "description": "Operating system setup, drivers, updates and licensed productivity software installation.",
+    "image": "assets/pc-building.jpg"
+  },
+  {
+    "id": "lan",
+    "name": "LAN & Networking",
+    "category": "Services",
+    "price": 0,
+    "description": "Home and small-office network setup or troubleshooting.",
+    "image": "assets/lan-network.jpg"
+  },
+  {
+    "id": "recovery",
+    "name": "Data Recovery Assessment",
+    "category": "Services",
+    "price": 0,
+    "description": "HDD, SSD and USB diagnostics and recovery attempts where feasible. Recovery is not guaranteed.",
+    "image": "assets/pc-building.jpg"
+  },
+  {
+    "id": "display",
+    "name": "Mobile Display Repair",
+    "category": "Services",
+    "price": 0,
+    "description": "Screen/display diagnosis and repair enquiry. Device support and estimate confirmed first.",
+    "image": "assets/lan-network.jpg"
+  },
+  {
+    "id": "battery",
+    "name": "Mobile Battery Replacement",
+    "category": "Services",
+    "price": 0,
+    "description": "Battery health checks and replacement enquiry for supported mobile devices.",
+    "image": "assets/lan-network.jpg"
+  }
+]
