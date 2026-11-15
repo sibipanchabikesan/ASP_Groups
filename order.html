@@ -49,8 +49,8 @@ button:disabled{opacity:.6;cursor:wait}
 footer{padding:24px 0;border-top:1px solid var(--ln);color:var(--mu);font-size:14px}
 @media(max-width:680px){.nav{align-items:flex-start;padding:12px 0;flex-direction:column}.grid{grid-template-columns:1fr}.field.full{grid-column:auto}.card{padding:20px}.hero{padding-top:40px}}
 </style>
-</head>
-<body>
+<link rel="stylesheet" href="site-theme.css"></head>
+<body data-theme="royal" data-mode="light"><script>try{const a=JSON.parse(localStorage.getItem("asp_site_appearance")||"null");if(a){document.body.dataset.theme=a.theme;document.body.dataset.mode=a.mode}}catch(e){}</script>
 <header><div class="wrap nav"><a class="brand" href="index.html">ASP <span>GROUPS</span></a><nav aria-label="Main navigation"><a href="index.html">Home</a><a href="auditors.html">ASP &amp; Auditors</a><a href="tech.html">Tech Solutions</a><a href="shop.html">Catalogue</a></nav></div></header>
 <section class="hero"><div class="wrap"><div class="eyebrow">ASP Tech Solutions · Salem</div><h1>Tell us what you need</h1><p>Share the service and device details. Your request will be saved for follow-up, then we’ll prepare an email to ASP Tech Solutions.</p></div></section>
 <main class="wrap">
@@ -184,5 +184,5 @@ form.addEventListener('submit',async event=>{
   }
 });
 </script>
-</body>
+<script type="module" src="site-theme.js"></script></body>
 </html>
