@@ -6,15 +6,21 @@ The web-app config is public client configuration, not a service-account credent
 
 ## Admin access
 
-Email/Password sign-in is enabled. The Firebase Authentication user `sibipanchabikesan@gmail.com` is the site admin. Sign in at [admin.html](admin.html) with the password set directly in Firebase.
+Email/Password sign-in is enabled. The Firebase Authentication user `sibipanchabikesan@gmail.com` is the site admin. Sign in at [admin.html](admin.html) or use the home page Admin controls with the Firebase email and password.
 
-The first successful admin login automatically copies the nine starter entries in `products.json` to Firestore when the products collection is empty. Use the Products and Orders tabs in Admin after signing in.
+The first successful login to `admin.html` automatically copies the nine starter entries in `products.json` to Firestore when the products collection is empty. Use the Products and Orders tabs in Admin after signing in.
 
 ## Firestore access
 
-The published rules are in [firestore.rules](firestore.rules). Visitors can read the catalogue and shop settings and submit an order. Only `sibipanchabikesan@gmail.com` can edit products/settings or read and manage orders. Order details include customer names, phone numbers, addresses and notes.
+The rules source is [firestore.rules](firestore.rules). The currently published rules let visitors read the catalogue and shop settings and submit orders. Only `sibipanchabikesan@gmail.com` can edit products/settings or read and manage orders. Order details include customer names, phone numbers, addresses and notes.
 
-The GitHub Pages domain `sibipanchabikesan.github.io` is authorized in Firebase Authentication. The email/password provider permits sign-up, but Firestore admin access is still restricted to the exact admin email by the rules.
+The latest rules add live homepage content saves to the `settings/site` document, readable by site visitors and writable only by the admin email. Publish the latest `firestore.rules` from Firebase Console → Firestore → Rules before using the home page Save changes button.
+
+The GitHub Pages domain `sibipanchabikesan.github.io` is authorized in Firebase Authentication. Email/password sign-up is enabled, but Firestore admin access is restricted to the exact admin email by the rules.
+
+## Homepage updates
+
+The home page Admin controls use Firebase Authentication and save the theme, contact details, PC catalogue, video links and gallery to Firestore. Saved changes appear on the live site without downloading or uploading `index.html`. A single save is limited to 700 KB; reduce the number or size of gallery photos if you reach that limit.
 
 ## Order notifications and payments
 
