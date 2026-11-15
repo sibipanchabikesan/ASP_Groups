@@ -13,7 +13,7 @@ const sharedVideoStates=new WeakMap();
 function renderSharedHeaderVideo(settings){
  if(document.querySelector('#hv'))return; // Home has its own video player.
  const file=typeof settings?.vfile==='string'?settings.vfile.trim():'';
- const videos=Array.isArray(settings?.videos)?settings.videos.filter(id=>typeof id==='string'&&/^[\\w-]{11}$/.test(id)):[];
+ const videos=Array.isArray(settings?.videos)?settings.videos.filter(id=>typeof id==='string'&&/^[\w-]{11}$/.test(id)):[];
  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
  let hosts=[...document.querySelectorAll('body .hero,body .shophero')];
  if(!hosts.length&&document.querySelector('header'))hosts=[document.querySelector('header')];
