@@ -25,3 +25,5 @@ footer,.foot{color:var(--mu)}
 
 /* Product management entry point */
 .product-admin-link{background:linear-gradient(90deg,var(--g1),var(--g2));color:#fff;font-weight:700;white-space:nowrap}.product-admin-link:hover{filter:brightness(1.08)}.tabs .product-tab{background:var(--ac);color:#1b2233;border-color:var(--ac);font-weight:700}
+
+.admin-panel-actions{display:flex;justify-content:flex-end;gap:10px;margin:16px 0}.admin-panel-actions .product-admin-link{padding:12px 20px;font-size:15px;box-shadow:0 6px 18px #1b223326}
