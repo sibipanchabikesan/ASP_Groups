@@ -9,11 +9,13 @@ function applyAppearance(value){
  try{const serialized=JSON.stringify({theme,mode});if(localStorage.getItem(STORAGE_KEY)!==serialized)localStorage.setItem(STORAGE_KEY,serialized)}catch(error){}
 }
 try{const cached=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');if(cached)applyAppearance(cached)}catch(error){}
+const DEFAULT_HEADER_VIDEOS=['pQpFebyALV0','P90X9xxm1gc'];
 const sharedVideoStates=new WeakMap();
 function renderSharedHeaderVideo(settings){
  if(document.querySelector('#hv'))return; // Home has its own video player.
  const file=typeof settings?.vfile==='string'?settings.vfile.trim():'';
- const videos=Array.isArray(settings?.videos)?settings.videos.filter(id=>typeof id==='string'&&/^[\w-]{11}$/.test(id)):[];
+ const configuredVideos=Array.isArray(settings?.videos)?settings.videos:DEFAULT_HEADER_VIDEOS;
+ const videos=configuredVideos.filter(id=>typeof id==='string'&&/^[\w-]{11}$/.test(id));
  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
  let hosts=[...document.querySelectorAll('body .hero,body .shophero')];
  if(!hosts.length&&document.querySelector('header'))hosts=[document.querySelector('header')];
@@ -53,4 +55,5 @@ function renderSharedHeaderVideo(settings){
 }
 
 window.addEventListener('storage',event=>{if(event.key!==STORAGE_KEY||!event.newValue)return;try{applyAppearance(JSON.parse(event.newValue))}catch(error){}});
+renderSharedHeaderVideo({});
 import('./store.js').then(({watchSiteContent})=>{watchSiteContent(data=>{if(data){applyAppearance(data);renderSharedHeaderVideo(data)}}).catch(()=>{})}).catch(()=>{});
