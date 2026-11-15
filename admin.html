@@ -17,7 +17,7 @@ $('addProductNav').onclick=()=>{if($('ap').hidden){$('lg').hidden=false;$('lg').
 document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>tab(b.dataset.t));
 S.onUser(u=>{$('lg').hidden=!!u;$('ap').hidden=!u;$('lo').hidden=!u||S.isDemo;if(u)load()});
 $('li').onclick=async()=>{try{await S.login($('em').value,$('pw').value)}catch{$('le').textContent='Wrong email or password.'}};$('lo').onclick=()=>S.logout();
-async function load(){const[o,s]=[await S.orders().catch(()=>[]),await S.settings()];P=await S.products();ords(o);list();
+async function load(){const[o,s]=[await S.orders().catch(()=>[]),await S.settings()];P=await S.products();if(!S.isDemo&&!P.length){const seed=await fetch('products.json').then(r=>r.json()).catch(()=>[]);for(const p of seed)await S.saveProduct({mrp:0,stock:null,active:true,...p});P=await S.products()}ords(o);list();
  $('s1').value=s.shopName||'';$('s2').value=s.banner||'';$('s3').value=s.whatsapp||'';$('s4').value=s.accent||'#22d3ee';$('s5').checked=s.open!==false}
 function ords(o){$('or').innerHTML=o.length?o.map(x=>`<div class="panel"><div class="row"><b>${e(x.id)} · ${new Date(x.created).toLocaleString('en-IN')}</b><select data-o="${e(x.id)}" style="width:auto">${['New','Confirmed','Shipped','Delivered','Cancelled'].map(s=>`<option${s===x.status?' selected':''}>${s}</option>`).join('')}</select></div><p>${x.items.map(i=>e(i.name)+' × '+i.qty).join('<br>')}</p><p><b>${inr(x.total)}</b> · ${e(x.name)} · <a href="tel:${e(x.phone)}">${e(x.phone)}</a><br>${e(x.address)}${x.notes?'<br><i>'+e(x.notes)+'</i>':''}</p></div>`).join(''):'<p>No orders yet. New orders will appear here.</p>';
  document.querySelectorAll('[data-o]').forEach(s=>s.onchange=()=>S.setStatus(s.dataset.o,s.value))}
