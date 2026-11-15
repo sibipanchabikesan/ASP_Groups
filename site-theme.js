@@ -13,9 +13,15 @@ const DEFAULT_HEADER_VIDEOS=['pQpFebyALV0','P90X9xxm1gc'];
 const sharedVideoStates=new WeakMap();
 function renderSharedHeaderVideo(settings){
  if(document.querySelector('#hv'))return; // Home has its own video player.
- const file=typeof settings?.vfile==='string'?settings.vfile.trim():'';
- const configuredVideos=Array.isArray(settings?.videos)?settings.videos:DEFAULT_HEADER_VIDEOS;
- const videos=configuredVideos.filter(id=>typeof id==='string'&&/^[\w-]{11}$/.test(id));
+ const auditorPage=/\/auditors\.html$/i.test(location.pathname);
+ const homeFile=typeof settings?.vfile==='string'?settings.vfile.trim():'';
+ const auditorFile=typeof settings?.auditorsVfile==='string'?settings.auditorsVfile.trim():'';
+ const homeConfiguredVideos=Array.isArray(settings?.videos)?settings.videos:DEFAULT_HEADER_VIDEOS;
+ const homeVideos=homeConfiguredVideos.filter(id=>typeof id==='string'&&/^[\w-]{11}$/.test(id));
+ const auditorVideos=Array.isArray(settings?.auditorsVideos)?settings.auditorsVideos.filter(id=>typeof id==='string'&&/^[\w-]{11}$/.test(id)):[];
+ const useAuditorVideo=auditorPage&&(!!auditorFile||auditorVideos.length>0);
+ const file=useAuditorVideo?auditorFile:homeFile;
+ const videos=useAuditorVideo?auditorVideos:homeVideos;
  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
  let hosts=[...document.querySelectorAll('body .hero,body .shophero')];
  if(!hosts.length&&document.querySelector('header'))hosts=[document.querySelector('header')];
