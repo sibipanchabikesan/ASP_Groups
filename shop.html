@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Shop | ASP Groups</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Rajdhani:wght@600;700&display=swap"><link rel="stylesheet" href="style.css"></head><body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Rajdhani:wght@600;700&display=swap"><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="site-theme.css"></head><body data-theme="royal" data-mode="light"><script>try{const a=JSON.parse(localStorage.getItem("asp_site_appearance")||"null");if(a){document.body.dataset.theme=a.theme;document.body.dataset.mode=a.mode}}catch(e){}</script>
 <div id="ann" class="ann" hidden></div>
 <header><div class="w bar"><a class="logo" href="index.html" id="nm">ASP <b>GROUPS</b></a><nav class="links" aria-label="Main navigation"><a href="index.html">Home</a><a href="auditors.html">ASP &amp; Auditors</a><a href="tech.html">Tech Solutions</a><a class="current" href="shop.html">Catalogue</a></nav><button class="btn" id="cb">Cart (<span id="cn">0</span>)</button></div></header>
 <section class="shophero"><div class="w"><span class="eyebrow">ASP Tech Solutions · Salem</span><h1>PC Builds &amp; Tech Services</h1><p>Browse the catalogue, choose what you need, and send us your order enquiry. We’ll confirm stock and pricing with you.</p></div></section>
@@ -16,7 +16,7 @@
 <div class="product-detail-prices"><strong id="prodDetailPrice"></strong><del id="prodDetailMrp"></del><span id="prodDetailOff"></span></div>
 <p id="prodDetailStock" class="product-detail-stock"></p>
 <p id="prodDetailDescription" class="product-detail-description"></p>
-<div class="product-detail-actions"><button type="button" class="btn" id="prodDetailAdd">Add to cart</button><button type="button" class="btn g" id="prodDetailCloseBottom">Close</button></div>
+<div class="product-detail-actions"><button type="button" class="btn" id="prodDetailAdd">Add to cart</button><button type="button" class="btn g" id="prodDetailBuy">Buy now</button><button type="button" class="btn g" id="prodDetailCloseBottom">Close</button></div>
 <p class="product-detail-note">No payment is taken online. We confirm price and availability before accepting an order.</p>
 </div></div>
 </dialog>
@@ -28,11 +28,17 @@
 <script type="module">
 import*as S from './store.js';
 const $=i=>document.getElementById(i),e=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),inr=n=>'₹'+Number(n).toLocaleString('en-IN');
-let P=[],C={},cat='',cart=JSON.parse(localStorage.getItem('asp_cart')||'{}');
+let P=[],C={},cat='',cart=JSON.parse(localStorage.getItem('asp_cart')||'{}');let buyNowProduct=null;
 const save=()=>{localStorage.setItem('asp_cart',JSON.stringify(cart));$('cn').textContent=Object.values(cart).reduce((a,b)=>a+b,0)};
 const lim=p=>typeof p.stock==='number'?p.stock:99;
 let currentProduct=null;
 function addToCart(p){if(!p||lim(p)<1)return false;const count=cart[p.id]||0;if(count>=lim(p))return false;cart[p.id]=count+1;save();return true}
+function beginBuyNow(p){
+ if(!p||lim(p)<1)return;
+ buyNowProduct=p;drawCart();$('er').textContent='';
+ if($('prodDetail').open)$('prodDetail').close();
+ $('dg').showModal()
+}
 function showProduct(p){
  currentProduct=p;
  const image=$('prodDetailImage');image.onerror=()=>{image.onerror=null;image.src='assets/pc-building.jpg'};image.src=p.image||'assets/pc-building.jpg';image.alt=p.name||'Product';
@@ -45,30 +51,34 @@ function showProduct(p){
  $('prodDetailStock').textContent=typeof p.stock==='number'?(p.stock>0?p.stock+' in stock':'Out of stock'):'Availability confirmed before order';
  $('prodDetailDescription').textContent=p.description||'No description provided.';
  const add=$('prodDetailAdd');add.disabled=lim(p)<1;add.textContent=lim(p)<1?'Out of stock':'Add to cart';
+ const buy=$('prodDetailBuy');buy.disabled=lim(p)<1;buy.textContent=lim(p)<1?'Out of stock':'Buy now';
  $('prodDetail').showModal()
 }
 function draw(){const q=$('q').value.toLowerCase(),s=$('so').value;let a=P.filter(p=>(!cat||p.category===cat)&&(p.name+p.category+(p.description||'')).toLowerCase().includes(q));
  if(s==='a')a.sort((x,y)=>x.price-y.price);if(s==='d')a.sort((x,y)=>y.price-x.price);if(s==='n')a.sort((x,y)=>x.name.localeCompare(y.name));
- $('gr').innerHTML=a.length?a.map(p=>`<article class="card" data-detail-card="${e(p.id)}">${p.mrp>p.price&&p.price>0?`<span class="off">${Math.round(100-p.price*100/p.mrp)}% off</span>`:''}<img src="${e(p.image||'assets/pc-building.jpg')}" alt="${e(p.name)}" loading="lazy" onerror="this.src='assets/pc-building.jpg'"><div class="b"><h3>${e(p.name)}</h3><p>${e(p.description)}</p><div class="pr">${p.price>0?inr(p.price)+(p.mrp>p.price?`<s>${inr(p.mrp)}</s>`:''):'Quote'}</div>${lim(p)<1?'<span class="out">Out of stock</span>':''}<div class="product-card-actions"><button type="button" class="btn g" data-d="${e(p.id)}">View details</button><button class="btn" data-a="${e(p.id)}" ${lim(p)<1?'disabled':''}>Add to cart</button></div></div></article>`).join(''):'<p>No products match. Try another search or category.</p>';
+ $('gr').innerHTML=a.length?a.map(p=>`<article class="card" data-detail-card="${e(p.id)}">${p.mrp>p.price&&p.price>0?`<span class="off">${Math.round(100-p.price*100/p.mrp)}% off</span>`:''}<img src="${e(p.image||'assets/pc-building.jpg')}" alt="${e(p.name)}" loading="lazy" onerror="this.src='assets/pc-building.jpg'"><div class="b"><h3>${e(p.name)}</h3><p>${e(p.description)}</p><div class="pr">${p.price>0?inr(p.price)+(p.mrp>p.price?`<s>${inr(p.mrp)}</s>`:''):'Quote'}</div>${lim(p)<1?'<span class="out">Out of stock</span>':''}<div class="product-card-actions"><button type="button" class="btn g" data-d="${e(p.id)}">View details</button><button class="btn" data-a="${e(p.id)}" ${lim(p)<1?'disabled':''}>Add to cart</button><button class="btn g" data-buy="${e(p.id)}" ${lim(p)<1?'disabled':''}>Buy now</button></div></div></article>`).join(''):'<p>No products match. Try another search or category.</p>';
  document.querySelectorAll('[data-detail-card]').forEach(card=>card.onclick=event=>{if(event.target.closest('button'))return;const p=P.find(x=>x.id===card.dataset.detailCard);if(p)showProduct(p)});
  document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const p=P.find(x=>x.id===b.dataset.d);if(p)showProduct(p)});
+ document.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{const p=P.find(x=>x.id===b.dataset.buy);beginBuyNow(p)});
  document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const p=P.find(x=>x.id===b.dataset.a);if(!p)return;if(addToCart(p)){b.textContent='Added ✓';setTimeout(()=>b.textContent='Add to cart',900)}else{b.textContent='Limit reached';setTimeout(()=>b.textContent='Add to cart',900)}})}
 function chips(){const c=['',...new Set(P.map(p=>p.category))];$('ch').innerHTML=c.map(x=>`<button class="chip ${x===cat?'on':''}" data-c="${e(x)}">${e(x||'All')}</button>`).join('');document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{cat=b.dataset.c;chips();draw()})}
-const rows=()=>P.filter(p=>cart[p.id]),total=()=>rows().reduce((t,p)=>t+p.price*cart[p.id],0);
-function drawCart(){$('ci').innerHTML=rows().map(p=>`<div class="row"><div>${e(p.name)}<br><small>${p.price>0?inr(p.price):'Quote'}</small></div><div><button class="btn g" data-m="${e(p.id)}">−</button> ${cart[p.id]} <button class="btn g" data-p="${e(p.id)}">+</button></div></div>`).join('')||'<p>Your cart is empty.</p>';$('tt').textContent=inr(total());
+const rows=()=>buyNowProduct?[buyNowProduct]:P.filter(p=>cart[p.id]),total=()=>rows().reduce((t,p)=>t+p.price*(buyNowProduct?1:cart[p.id]),0);
+function drawCart(){$('ci').innerHTML=rows().map(p=>`<div class="row"><div>${e(p.name)}<br><small>${p.price>0?inr(p.price):'Quote'}</small></div><div>${buyNowProduct ? "1" : '<button class="btn g" data-m="'+e(p.id)+'">−</button> '+cart[p.id]+' <button class="btn g" data-p="'+e(p.id)+'">+</button>'}</div></div>`).join('')||'<p>Your cart is empty.</p>';$('tt').textContent=inr(total());
  document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{if(--cart[b.dataset.m]<1)delete cart[b.dataset.m];save();drawCart()});document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const p=P.find(x=>x.id===b.dataset.p);cart[p.id]=Math.min(cart[p.id]+1,lim(p));save();drawCart()})}
-$('cb').onclick=()=>{drawCart();$('er').textContent='';dg.showModal()};$('cl').onclick=()=>dg.close();
+$('cb').onclick=()=>{drawCart();$('er').textContent='';dg.showModal()};$('cl').onclick=()=>{dg.close();buyNowProduct=null};
+$('dg').addEventListener('cancel',()=>{buyNowProduct=null});
 $('prodDetailClose').onclick=()=>$('prodDetail').close();$('prodDetailCloseBottom').onclick=()=>$('prodDetail').close();
 $('prodDetail').addEventListener('click',event=>{if(event.target===$('prodDetail'))$('prodDetail').close()});
 $('prodDetailAdd').onclick=()=>{if(!currentProduct)return;const button=$('prodDetailAdd');if(addToCart(currentProduct)){button.textContent='Added to cart ✓';setTimeout(()=>{if(currentProduct&&button.isConnected)button.textContent='Add to cart'},900)}else{button.textContent='Limit reached';setTimeout(()=>{if(button.isConnected)button.textContent='Add to cart'},900)}};
+$('prodDetailBuy').onclick=()=>beginBuyNow(currentProduct);
 $('q').oninput=draw;$('so').onchange=draw;
 $('po').onclick=async()=>{const r=rows(),n=$('n').value.trim(),p=$('p').value.replace(/\D/g,''),a=$('a').value.trim();
  if(C.open===false)return $('er').textContent='Orders are paused right now. Please call us.';if(!r.length)return $('er').textContent='Add a product first.';if(!n||p.length<10||!a)return $('er').textContent='Enter your name, a 10-digit phone number and a delivery address.';
- const o={id:'ASP'+Date.now().toString(36).toUpperCase(),created:Date.now(),status:'New',name:n,phone:p,address:a,notes:$('o').value.trim(),items:r.map(x=>({id:x.id,name:x.name,price:x.price,qty:cart[x.id]})),total:total()};
+ const o={id:'ASP'+Date.now().toString(36).toUpperCase(),created:Date.now(),status:'New',name:n,phone:p,address:a,notes:$('o').value.trim(),items:r.map(x=>({id:x.id,name:x.name,price:x.price,qty:buyNowProduct?1:cart[x.id]})),total:total()};
  $('po').disabled=true;try{await S.placeOrder(o)}catch(x){$('po').disabled=false;return $('er').textContent='Could not place the order. Check your connection and try again.'}
  const m='Order '+o.id+'\n'+o.items.map(i=>i.name+' x'+i.qty).join('\n')+'\nTotal: '+inr(o.total)+'\n'+n+' · '+p;$('wa').href='https://wa.me/'+(C.whatsapp||'919488241710')+'?text='+encodeURIComponent(m);
- cart={};save();$('po').disabled=false;dg.close();$('oid').textContent=o.id;ok.showModal()};
+ if(!buyNowProduct){cart={};save()}buyNowProduct=null;$('po').disabled=false;dg.close();$('oid').textContent=o.id;ok.showModal()};
 (async()=>{C=await S.settings();P=(await S.products()).filter(p=>p.active!==false);
- if(C.shopName)$('nm').textContent=C.shopName;if(C.accent)document.documentElement.style.setProperty('--ac',C.accent);if(C.banner){$('ann').textContent=C.banner;$('ann').hidden=false}
+ if(C.shopName)$('nm').textContent=C.shopName;if(C.accent)document.documentElement.style.setProperty('--catalog-accent',C.accent);if(C.banner){$('ann').textContent=C.banner;$('ann').hidden=false}
  save();chips();draw()})();
-</script></body></html>
+</script><script type="module" src="site-theme.js"></script></body></html>
