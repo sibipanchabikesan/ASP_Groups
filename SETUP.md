@@ -1,22 +1,29 @@
-# ASP Groups shop – going live
-Without setup the shop runs in **demo mode** (data stays in one browser). To save orders for real:
+# Firebase setup for ASP Groups
 
-1. console.firebase.google.com → Add project → Build → **Firestore Database** (production mode) and **Authentication → Email/Password** → add your admin user.
-2. Project settings → Your apps → Web app → copy the config into `config.js`.
-3. Authentication → Settings → Authorized domains: add `sibipanchabikesan.github.io`.
-4. Firestore → Rules → paste the rules below (replace the email) → Publish.
-5. Optional order emails: get a free key at web3forms.com and paste it as `web3formsKey` in `config.js`.
-6. Commit everything to GitHub; the Pages workflow deploys it. Admin is at `/admin.html`.
+The catalogue currently uses demo mode because `config.js` has no Firebase project values. In demo mode, product edits and orders stay only in the current browser.
 
-```
-rules_version = '2';
-service cloud.firestore { match /databases/{d}/documents {
-  function admin(){ return request.auth != null && request.auth.token.email == 'YOUR_ADMIN_EMAIL'; }
-  match /products/{i} { allow read: if true; allow write: if admin(); }
-  match /settings/{i} { allow read: if true; allow write: if admin(); }
-  match /orders/{i} {
-    allow create: if request.resource.data.keys().hasOnly(['id','created','status','name','phone','address','notes','items','total']) && request.resource.data.items.size() <= 30;
-    allow read, update, delete: if admin();
-  }
-}}
-```
+## 1. Connect a Firebase project
+
+Use an existing Firebase project or create one in the Firebase Console. Register a **Web app** in that project and copy its web-app config into `config.js`. This site only reads `apiKey`, `authDomain`, `projectId`, and `appId`.
+
+The web-app config is public client configuration, not a service-account credential. Never put a service-account JSON file or private key in this repository.
+
+## 2. Create the database and enable admin login
+
+1. Create the default Cloud Firestore database in **production mode**. For Salem, `asia-south1` (Mumbai) is the nearby region. The Firestore location is permanent after the database is created.
+2. In Authentication, enable **Email/Password**.
+3. Add the admin account `sibipanchabikesan@gmail.com` under Authentication → Users. Set its password directly in Firebase; do not put the password in this repository.
+4. Add `sibipanchabikesan.github.io` to Authentication → Settings → Authorized domains.
+
+## 3. Publish the Firestore rules
+
+Copy the contents of `firestore.rules` into Firestore → Rules and publish them. They allow visitors to read products and shop settings and submit validated orders. Only the admin email above can read/manage orders or change products and settings.
+
+The first successful admin login automatically copies the existing `products.json` catalogue into Firestore if the products collection is empty.
+
+## 4. Put the web config in the site and publish
+
+Paste the Firebase web-app values into `config.js`, then commit and publish the change. Open `/admin.html`, log in with the admin account, and confirm the Products and Orders pages load. Public catalogue orders will then be saved to Firestore and visible on the Orders tab.
+
+Order email alerts are optional. To enable them, register a free Web3Forms key for the receiving email and set `web3formsKey` in `config.js`. Without that optional key, orders are still stored in Firestore and can be reviewed in Admin.
+
