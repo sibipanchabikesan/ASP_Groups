@@ -13,7 +13,7 @@ input,select,textarea{width:100%;font:inherit;color:var(--tx);background:#fff;bo
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:16px;margin:14px 0 44px}
 .card{background:var(--pn);border:1px solid var(--ln);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;position:relative;box-shadow:0 5px 18px #1b22330b;transition:transform .2s,box-shadow .2s}.card:hover{transform:translateY(-3px);box-shadow:0 10px 24px #1b22331b}.card img{width:100%;height:170px;object-fit:cover;background:#edf0f5}
 .card .b{padding:15px;display:flex;flex-direction:column;gap:7px;flex:1}.card h3{font-size:18px;color:var(--g1);font-family:"Playfair Display",Georgia,serif}.card p{margin:0;color:var(--mu);font-size:14px}.card .btn{margin-top:auto}
-.pr{font:700 21px Rajdhani,"Segoe UI",sans-serif;color:#745200}.pr s{color:var(--mu);font-size:14px;font-weight:500;margin-left:6px}.off{position:absolute;top:9px;left:9px;background:#188354;color:#fff;border-radius:5px;padding:3px 8px;font-size:12px;font-weight:700;box-shadow:0 2px 8px #0002}.out{color:#9d263b;font-size:13px}
+.pr{font:700 21px Inter,system-ui,sans-serif;color:#745200}.pr s{color:var(--mu);font-size:14px;font-weight:500;margin-left:6px}.off{position:absolute;top:9px;left:9px;background:#188354;color:#fff;border-radius:5px;padding:3px 8px;font-size:12px;font-weight:700;box-shadow:0 2px 8px #0002}.out{color:#9d263b;font-size:13px}
 dialog{background:#fff;color:var(--tx);border:1px solid var(--ln);border-radius:14px;width:min(480px,94vw);max-height:92vh;box-shadow:0 20px 60px #1118273d}dialog::backdrop{background:#11182788}dialog h2{color:var(--g1)}
 .row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--ln)}.row button{width:30px}
 .panel{background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:18px;margin:14px 0;box-shadow:0 4px 16px #1b22330b}.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -22,3 +22,6 @@ table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:9px;bord
 footer,.foot{color:var(--mu)}
 @media(max-width:760px){.bar{gap:7px;flex-wrap:wrap;padding:8px 0}.logo{font-size:19px}.links{order:3;width:100%;padding-bottom:3px}.bar>.btn{margin-left:auto}}
 @media(max-width:600px){.g2{grid-template-columns:1fr}.card img{height:135px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.card .b{padding:11px}.card h3{font-size:16px}.tools select{flex:1;min-width:130px}.shophero{padding:34px 0}.shophero p{font-size:15px}}
+
+/* Product management entry point */
+.product-admin-link{background:linear-gradient(90deg,var(--g1),var(--g2));color:#fff;font-weight:700;white-space:nowrap}.product-admin-link:hover{filter:brightness(1.08)}.tabs .product-tab{background:var(--ac);color:#1b2233;border-color:var(--ac);font-weight:700}
