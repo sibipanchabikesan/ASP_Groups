@@ -9,10 +9,13 @@ export async function saveProduct(p){await init();if(isDemo){const l=await produ
 export async function delProduct(id){await init();if(isDemo)return LS('p',(await products()).filter(x=>x.id!==id));await fb.f.deleteDoc(D('products',id))}
 export async function settings(){await init();if(isDemo)return LS('s')||{};const s=await fb.f.getDoc(D('settings','main'));return s.exists()?s.data():{}}
 export async function saveSettings(s){await init();if(isDemo)return LS('s',s);await fb.f.setDoc(D('settings','main'),s)}
+export async function siteContent(){await init();if(isDemo)return LS('site');const s=await fb.f.getDoc(D('settings','site'));return s.exists()?s.data():null}
+export async function saveSiteContent(s){await init();if(isDemo)return LS('site',s);await fb.f.setDoc(D('settings','site'),s)}
+export async function watchSiteContent(cb){await init();if(isDemo){cb(LS('site'));return()=>{}}return fb.f.onSnapshot(D('settings','site'),s=>cb(s.exists()?s.data():null))}
 export async function placeOrder(o){await init();if(isDemo)LS('o',[...(LS('o')||[]),o]);else await fb.f.setDoc(D('orders',o.id),o);
  if(WK)fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_key:WK,subject:'New order '+o.id,name:o.name,phone:o.phone,address:o.address,notes:o.notes,total:o.total,items:o.items.map(i=>i.name+' x'+i.qty+' @ '+i.price).join('\n')})}).catch(()=>{})}
 export async function orders(){await init();return(isDemo?LS('o')||[]:await all('orders')).sort((a,b)=>b.created-a.created)}
 export async function setStatus(id,status){await init();if(isDemo)return LS('o',(LS('o')||[]).map(o=>o.id===id?{...o,status}:o));await fb.f.updateDoc(D('orders',id),{status})}
-export async function login(e,p){await init();await fb.u.signInWithEmailAndPassword(fb.auth,e,p)}
+export async function login(e,p){await init();return fb.u.signInWithEmailAndPassword(fb.auth,e,p)}
 export async function logout(){await init();if(!isDemo)await fb.u.signOut(fb.auth)}
 export async function onUser(cb){await init();isDemo?cb({email:'demo'}):fb.u.onAuthStateChanged(fb.auth,cb)}
