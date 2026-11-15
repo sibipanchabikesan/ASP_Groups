@@ -14,7 +14,7 @@ The first successful login to `admin.html` automatically copies the nine starter
 
 The rules source is [firestore.rules](firestore.rules). The currently published rules let visitors read the catalogue and shop settings and submit orders. Only `sibipanchabikesan@gmail.com` can edit products/settings or read and manage orders. Order details include customer names, phone numbers, addresses and notes.
 
-The latest rules add live homepage content saves to the `settings/site` document, readable by site visitors and writable only by the admin email. Publish the latest `firestore.rules` from Firebase Console → Firestore → Rules before using the home page Save changes button.
+The published rules include live homepage content saves through the `settings/site` document. Visitors can read this public site content; only the admin email can write it.
 
 The GitHub Pages domain `sibipanchabikesan.github.io` is authorized in Firebase Authentication. Email/password sign-up is enabled, but Firestore admin access is restricted to the exact admin email by the rules.
 
