@@ -162,13 +162,13 @@ nav a.admin-link{background:var(--a);color:#1b2233;font-weight:700;box-shadow:0 
 <article class="service-photo rv"><img src="assets/lan-network.jpg" alt="Technician checking an organized small-office LAN rack" loading="lazy"><div class="service-photo-copy"><h3>LAN and network setup</h3><p>Neat wired connections, router and switch setup for homes and small offices.</p></div></article>
 </div></div></section>
 <section class="catalog-section" id="pc-build-catalog"><div class="w"><div class="eb rv">// PC BUILD CATALOGUE</div><h2 class="rv">PC builds &amp; prices</h2><p class="catalog-intro rv">Choose a starting point. Each build can be adjusted to your needs; prices are maintained by ASP Tech Solutions.</p><div class="pc-catalog-grid" id="pc-catalog"></div></div></section>
-<section style="padding-top:0"><div class="w"><p style="margin-top:10px"><a class="btn" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=999666321a%40gmail.com&amp;su=Project%20enquiry%20for%20ASP%20Tech%20Solutions&amp;body=Hello%20ASP%20Tech%20Solutions%2C%0A%0A" target="_blank" rel="noopener noreferrer">Ask about a PC build or service</a></p></div></section>
+<section style="padding-top:0"><div class="w"><p style="margin-top:10px"><a class="btn" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=9996663210a%40gmail.com&amp;su=Project%20enquiry%20for%20ASP%20Tech%20Solutions&amp;body=Hello%20ASP%20Tech%20Solutions%2C%0A%0A" target="_blank" rel="noopener noreferrer">Ask about a PC build or service</a></p></div></section>
 </div>
 
 <div class="view" id="v-gal"><section><div class="w"><div class="eb rv">Gallery</div><h2 class="rv" style="font-family:'Playfair Display',Georgia,serif">Moments &amp; work</h2><div id="gal"></div></div></section></div>
 
 <div class="view" id="v-con"><section><div class="w"><div class="eb rv">Contact</div><h2 class="rv" style="font-family:'Playfair Display',Georgia,serif">Let’s talk</h2>
-<div class="g2"><div class="cd rv"><h3>ASP Groups</h3><p>Salem, Tamil Nadu, India</p><p id="ct-ph">Phone: 9488241710</p><p id="ct-em">Email: sibipanchabikesan@gmail.com</p><p><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=asp.auditors%40gmail.com&amp;su=Enquiry%20for%20ASP%20%26%20Auditors" target="_blank" rel="noopener noreferrer">ASP &amp; Auditors: asp.auditors@gmail.com</a></p><p><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=999666321a%40gmail.com&amp;su=Enquiry%20for%20ASP%20Tech%20Solutions" target="_blank" rel="noopener noreferrer">ASP Tech Solutions: 999666321a@gmail.com</a></p></div>
+<div class="g2"><div class="cd rv"><h3>ASP Groups</h3><p>Salem, Tamil Nadu, India</p><p id="ct-ph">Phone: 9488241710</p><p id="ct-em">Email: sibipanchabikesan@gmail.com</p><p><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=asp.auditors%40gmail.com&amp;su=Enquiry%20for%20ASP%20%26%20Auditors" target="_blank" rel="noopener noreferrer">ASP &amp; Auditors: asp.auditors@gmail.com</a></p><p><a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=9996663210a%40gmail.com&amp;su=Enquiry%20for%20ASP%20Tech%20Solutions" target="_blank" rel="noopener noreferrer">ASP Tech Solutions: 9996663210a@gmail.com</a></p></div>
 <div class="cd rv"><h3>Working with us</h3><p>Tell us what you need, whether an audit, a filing or a piece of software, and we will point you to the right division.</p></div></div></div></section></div>
 </main>
 
@@ -249,7 +249,7 @@ function renderPcCatalog(){
   const desc=document.createElement('p');desc.textContent=item.description||'Configured to your requirements and budget.';
   const price=document.createElement('div');price.className='pc-price';price.textContent=(item.price||'').trim()||'Price on request';
   const link=document.createElement('a');link.className='btn';link.target='_blank';link.rel='noopener noreferrer';link.textContent='Enquire about this build';
-  link.href='https://mail.google.com/mail/?view=cm&fs=1&to=999666321a%40gmail.com&su='+encodeURIComponent('PC build enquiry: '+(item.name||'PC Build'))+'&body='+encodeURIComponent('Hello ASP Tech Solutions,\n\nI am interested in '+(item.name||'a PC build')+'.\n\n');
+  link.href='https://mail.google.com/mail/?view=cm&fs=1&to=9996663210a%40gmail.com&su='+encodeURIComponent('PC build enquiry: '+(item.name||'PC Build'))+'&body='+encodeURIComponent('Hello ASP Tech Solutions,\n\nI am interested in '+(item.name||'a PC build')+'.\n\n');
   card.append(title,desc,price,link);root.appendChild(card);
  });
 }
