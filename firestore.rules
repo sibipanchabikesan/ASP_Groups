@@ -43,7 +43,7 @@ service cloud.firestore {
           "theme", "mode", "anim", "phone", "email",
           "gallery", "videos", "vfile", "pcCatalog"
         ])
-        && request.resource.data.theme in ["royal", "sunset", "emerald", "violet"]
+        && request.resource.data.theme in ["royal", "sunset", "emerald", "violet", "ocean", "rose", "forest", "charcoal"]
         && request.resource.data.mode in ["light", "dark"]
         && request.resource.data.anim in ["none", "minimal", "subtle"]
         && request.resource.data.phone is string
