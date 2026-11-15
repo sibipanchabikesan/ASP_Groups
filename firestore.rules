@@ -1,0 +1,101 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSiteAdmin() {
+      return request.auth != null
+        && request.auth.token.email == "sibipanchabikesan@gmail.com";
+    }
+
+    function validProduct(productId) {
+      return request.resource.data.keys().hasAll([
+          "id", "name", "category", "price", "mrp", "stock",
+          "image", "description", "active"
+        ])
+        && request.resource.data.keys().hasOnly([
+          "id", "name", "category", "price", "mrp", "stock",
+          "image", "description", "active"
+        ])
+        && request.resource.data.id == productId
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 2
+        && request.resource.data.name.size() <= 120
+        && request.resource.data.category is string
+        && request.resource.data.category.size() <= 80
+        && request.resource.data.price is number
+        && request.resource.data.price >= 0
+        && request.resource.data.mrp is number
+        && request.resource.data.mrp >= 0
+        && (request.resource.data.stock == null
+          || (request.resource.data.stock is int && request.resource.data.stock >= 0))
+        && request.resource.data.image is string
+        && request.resource.data.image.size() <= 900000
+        && request.resource.data.description is string
+        && request.resource.data.description.size() <= 2000
+        && request.resource.data.active is bool;
+    }
+
+    function validSettings() {
+      return request.resource.data.keys().hasAll([
+          "shopName", "banner", "whatsapp", "accent", "open"
+        ])
+        && request.resource.data.keys().hasOnly([
+          "shopName", "banner", "whatsapp", "accent", "open"
+        ])
+        && request.resource.data.shopName is string
+        && request.resource.data.shopName.size() <= 80
+        && request.resource.data.banner is string
+        && request.resource.data.banner.size() <= 240
+        && request.resource.data.whatsapp is string
+        && request.resource.data.whatsapp.size() <= 15
+        && request.resource.data.accent is string
+        && request.resource.data.accent.matches("^#[0-9a-fA-F]{6}$")
+        && request.resource.data.open is bool;
+    }
+
+    function validOrder(orderId) {
+      return request.resource.data.keys().hasAll([
+          "id", "created", "status", "name", "phone",
+          "address", "notes", "items", "total"
+        ])
+        && request.resource.data.keys().hasOnly([
+          "id", "created", "status", "name", "phone",
+          "address", "notes", "items", "total"
+        ])
+        && request.resource.data.id == orderId
+        && request.resource.data.created is int
+        && request.resource.data.status == "New"
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 2
+        && request.resource.data.name.size() <= 100
+        && request.resource.data.phone is string
+        && request.resource.data.phone.matches("^[0-9]{10,15}$")
+        && request.resource.data.address is string
+        && request.resource.data.address.size() >= 5
+        && request.resource.data.address.size() <= 500
+        && request.resource.data.notes is string
+        && request.resource.data.notes.size() <= 2000
+        && request.resource.data.items is list
+        && request.resource.data.items.size() >= 1
+        && request.resource.data.items.size() <= 30
+        && request.resource.data.total is number
+        && request.resource.data.total >= 0;
+    }
+
+    match /products/{productId} {
+      allow read: if true;
+      allow create, update: if isSiteAdmin() && validProduct(productId);
+      allow delete: if isSiteAdmin();
+    }
+
+    match /settings/{settingId} {
+      allow read: if true;
+      allow create, update: if isSiteAdmin() && validSettings();
+      allow delete: if isSiteAdmin();
+    }
+
+    match /orders/{orderId} {
+      allow create: if validOrder(orderId);
+      allow read, update, delete: if isSiteAdmin();
+    }
+  }
+}
