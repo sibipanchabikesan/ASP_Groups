@@ -1,1 +1,188 @@
-<!doctype html><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=shop.html"><a href="shop.html">Open the shop</a>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#1d3c8f">
+<title>Place a Service Order | ASP Tech Solutions</title>
+<meta name="description" content="Request PC repair, a custom build, software setup, networking, data recovery or phone service from ASP Tech Solutions in Salem.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap">
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--tx:#1b2233;--mu:#5b6578;--ln:#e2e6f0;--g1:#1d3c8f;--g2:#7b2ff7;--a:#f5b301}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 Inter,system-ui,sans-serif}
+a{color:inherit}
+.wrap{width:min(1080px,calc(100% - 36px));margin:auto}
+header{position:sticky;top:0;z-index:3;background:#fff;border-bottom:3px solid transparent;border-image:linear-gradient(90deg,var(--g1),var(--g2),var(--a)) 1}
+.nav{min-height:66px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{font:700 19px "Playfair Display",Georgia,serif;text-decoration:none;white-space:nowrap}
+.brand span{background:linear-gradient(90deg,var(--g1),var(--g2));-webkit-background-clip:text;background-clip:text;color:transparent}
+nav{display:flex;gap:6px;overflow:auto}
+nav a{padding:6px 12px;border-radius:20px;color:var(--mu);text-decoration:none;white-space:nowrap;font:500 14px Inter,system-ui,sans-serif}
+nav a:hover{color:#fff;background:linear-gradient(90deg,var(--g1),var(--g2))}
+.hero{padding:52px 0 30px;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border-bottom:5px solid var(--a)}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#ffe281;font-weight:700}
+h1,h2,h3{line-height:1.2}
+h1{font:700 clamp(30px,5vw,44px)/1.15 "Playfair Display",Georgia,serif;margin:10px 0}
+.hero p{max-width:700px;color:#f4f3ff;margin:0}
+main{padding:26px 0 60px}
+.card{max-width:780px;margin:auto;padding:26px;background:var(--card);border:1px solid var(--ln);border-radius:16px;box-shadow:0 8px 28px #1b223310}
+.intro{margin:0 0 22px;color:var(--mu)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+label{font-size:14px;font-weight:600;color:#394357}
+input,select,textarea{width:100%;padding:12px;border:1px solid #cbd3e1;border-radius:9px;background:#fff;color:var(--tx);font:15px Inter,system-ui,sans-serif}
+textarea{min-height:120px;resize:vertical}
+button,.button{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:9px;background:var(--a);color:#1b2233;padding:12px 19px;font:700 15px Inter,system-ui,sans-serif;text-decoration:none;cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}
+.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:20px}
+.secondary{background:#fff;border:1px solid var(--ln)}
+.hint,.privacy{font-size:13px;color:var(--mu)}
+.hint{margin:5px 0 0}
+.privacy{margin:18px 0 0}
+.status{margin:0 0 16px;padding:12px 14px;border-radius:9px;background:#eff6ff;color:#1d3c8f}
+.status.error{background:#fff0f0;color:#a51d1d}
+.status[hidden]{display:none}
+footer{padding:24px 0;border-top:1px solid var(--ln);color:var(--mu);font-size:14px}
+@media(max-width:680px){.nav{align-items:flex-start;padding:12px 0;flex-direction:column}.grid{grid-template-columns:1fr}.field.full{grid-column:auto}.card{padding:20px}.hero{padding-top:40px}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav"><a class="brand" href="index.html">ASP <span>GROUPS</span></a><nav aria-label="Main navigation"><a href="index.html">Home</a><a href="auditors.html">ASP &amp; Auditors</a><a href="tech.html">Tech Solutions</a><a href="shop.html">Catalogue</a></nav></div></header>
+<section class="hero"><div class="wrap"><div class="eyebrow">ASP Tech Solutions · Salem</div><h1>Tell us what you need</h1><p>Share the service and device details. Your request will be saved for follow-up, then we’ll prepare an email to ASP Tech Solutions.</p></div></section>
+<main class="wrap">
+<form id="serviceForm" class="card">
+<div id="status" class="status" role="status" aria-live="polite" hidden></div>
+<p class="intro">This is a service request. We’ll contact you to confirm availability, estimate and next steps before any work begins.</p>
+<div class="grid">
+<div class="field">
+<label for="name">Your name</label>
+<input id="name" name="name" type="text" autocomplete="name" maxlength="100" required>
+</div>
+<div class="field">
+<label for="phone">Phone number</label>
+<input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" maxlength="18" placeholder="10-digit number" required>
+</div>
+<div class="field">
+<label for="email">Email (optional)</label>
+<input id="email" name="email" type="email" autocomplete="email" maxlength="160">
+</div>
+<div class="field">
+<label for="service">Service</label>
+<select id="service" name="service" required>
+<option value="pc-repair">PC repair &amp; troubleshooting</option>
+<option value="custom-pc">Custom PC build</option>
+<option value="software">Software &amp; OS installation</option>
+<option value="lan">LAN &amp; networking</option>
+<option value="data-recovery">Data recovery assessment</option>
+<option value="mobile-display">Mobile display repair</option>
+<option value="battery">Battery replacement</option>
+<option value="other">Other Tech Solutions service</option>
+</select>
+</div>
+<div class="field">
+<label for="device">Device / model (optional)</label>
+<input id="device" name="device" type="text" maxlength="140" placeholder="For example, desktop PC or phone model">
+</div>
+<div class="field">
+<label for="budget">Approximate budget (optional)</label>
+<input id="budget" name="budget" type="text" maxlength="80" placeholder="₹">
+</div>
+<div class="field full">
+<label for="area">City / area</label>
+<input id="area" name="area" type="text" autocomplete="address-level2" minlength="5" maxlength="150" placeholder="Salem, Tamil Nadu" required>
+<p class="hint">City or area is enough for the first request. Please don’t include passwords, OTPs or payment details.</p>
+</div>
+<div class="field full">
+<label for="details">Describe the issue or the PC build you want</label>
+<textarea id="details" name="details" maxlength="1200" minlength="5" required></textarea>
+</div>
+</div>
+<div class="actions"><button id="submit" type="submit">Place service request &amp; create email</button><a class="button secondary" href="tech.html">Back to services</a></div>
+<p class="privacy">Your request is added to the admin order list. An email draft is prepared for <strong>9996663210a@gmail.com</strong>; review it and press <strong>Send</strong> to email the request.</p>
+</form>
+</main>
+<footer><div class="wrap">ASP Tech Solutions · Salem, Tamil Nadu · <a href="mailto:9996663210a@gmail.com">9996663210a@gmail.com</a></div></footer>
+<script type="module">
+import * as Store from './store.js';
+const TECH_EMAIL='9996663210a@gmail.com';
+const services={
+  'pc-repair':'PC repair & troubleshooting',
+  'custom-pc':'Custom PC build',
+  'software':'Software & OS installation',
+  'lan':'LAN & networking',
+  'data-recovery':'Data recovery assessment',
+  'mobile-display':'Mobile display repair',
+  'battery':'Battery replacement',
+  'other':'Other Tech Solutions service'
+};
+const form=document.querySelector('#serviceForm');
+const statusBox=document.querySelector('#status');
+const submitButton=document.querySelector('#submit');
+const serviceSelect=document.querySelector('#service');
+const requestedService=new URLSearchParams(location.search).get('service');
+if(requestedService && services[requestedService]) serviceSelect.value=requestedService;
+
+function showStatus(message,isError=false){
+  statusBox.textContent=message;
+  statusBox.classList.toggle('error',isError);
+  statusBox.hidden=false;
+}
+form.addEventListener('submit',async event=>{
+  event.preventDefault();
+  const values=new FormData(form);
+  const name=String(values.get('name')||'').trim();
+  const phone=String(values.get('phone')||'').replace(/\D/g,'');
+  const email=String(values.get('email')||'').trim();
+  const service=String(values.get('service')||'');
+  const device=String(values.get('device')||'').trim();
+  const budget=String(values.get('budget')||'').trim();
+  const area=String(values.get('area')||'').trim();
+  const details=String(values.get('details')||'').trim();
+  if(phone.length<10||phone.length>15){showStatus('Enter a phone number with 10 to 15 digits.',true);return}
+  if(!services[service]){showStatus('Choose a service from the list.',true);return}
+  const title=services[service];
+  const order={
+    id:'TECH'+Date.now().toString(36).toUpperCase(),
+    created:Date.now(),
+    status:'New',
+    name,
+    phone,
+    address:area,
+    notes:['Service: '+title,'Device / model: '+(device||'Not provided'),'Budget: '+(budget||'Not provided'),'Email: '+(email||'Not provided'),'Details: '+details].join('\n'),
+    items:[{id:service,name:'Service request: '+title,price:0,qty:1}],
+    total:0
+  };
+  submitButton.disabled=true;
+  showStatus('Saving your request and preparing the email draft…');
+  try{
+    await Store.placeOrder(order);
+    const body=[
+      'ASP Tech Solutions service request',
+      'Order ID: '+order.id,
+      '',
+      'Service: '+title,
+      'Name: '+name,
+      'Phone: '+phone,
+      'Email: '+(email||'Not provided'),
+      'City / area: '+area,
+      'Device / model: '+(device||'Not provided'),
+      'Budget: '+(budget||'Not provided'),
+      '',
+      'Details:',
+      details
+    ].join('\n');
+    const params=new URLSearchParams({view:'cm',fs:'1',to:TECH_EMAIL,su:'Tech service request '+order.id,body});
+    showStatus('Request saved. Opening a prepared email to ASP Tech Solutions; review the details and press Send.');
+    location.assign('https://mail.google.com/mail/?'+params.toString());
+  }catch(error){
+    submitButton.disabled=false;
+    showStatus('We could not save the request. Check your connection and try again, or email 9996663210a@gmail.com directly.',true);
+  }
+});
+</script>
+</body>
+</html>
