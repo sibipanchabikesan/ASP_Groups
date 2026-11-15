@@ -5,6 +5,21 @@
 <section class="shophero"><div class="w"><span class="eyebrow">ASP Tech Solutions · Salem</span><h1>PC Builds &amp; Tech Services</h1><p>Browse the catalogue, choose what you need, and send us your order enquiry. We’ll confirm stock and pricing with you.</p></div></section>
 <main class="w"><div class="tools"><input id="q" type="search" placeholder="Search products" aria-label="Search products"><select id="so" aria-label="Sort"><option value="">Featured</option><option value="a">Price: low to high</option><option value="d">Price: high to low</option><option value="n">Name A–Z</option></select></div>
 <div class="chips" id="ch"></div><div class="grid" id="gr"></div></main>
+<dialog id="prodDetail" aria-labelledby="prodDetailName">
+<button type="button" id="prodDetailClose" class="product-detail-close" aria-label="Close product details">×</button>
+<div class="product-detail">
+<img id="prodDetailImage" class="product-detail-image" src="assets/pc-building.jpg" alt="">
+<div class="product-detail-copy">
+<p id="prodDetailCategory" class="product-detail-category"></p>
+<h2 id="prodDetailName">Product details</h2>
+<p id="prodDetailId" class="product-detail-id"></p>
+<div class="product-detail-prices"><strong id="prodDetailPrice"></strong><del id="prodDetailMrp"></del><span id="prodDetailOff"></span></div>
+<p id="prodDetailStock" class="product-detail-stock"></p>
+<p id="prodDetailDescription" class="product-detail-description"></p>
+<div class="product-detail-actions"><button type="button" class="btn" id="prodDetailAdd">Add to cart</button><button type="button" class="btn g" id="prodDetailCloseBottom">Close</button></div>
+<p class="product-detail-note">No payment is taken online. We confirm price and availability before accepting an order.</p>
+</div></div>
+</dialog>
 <dialog id="dg"><h2>Your cart</h2><div id="ci"></div><div class="row"><b>Total</b><b id="tt"></b></div>
 <label for="n">Name</label><input id="n" autocomplete="name"><label for="p">Phone / WhatsApp</label><input id="p" type="tel" autocomplete="tel"><label for="a">Delivery address</label><textarea id="a" rows="3" autocomplete="street-address"></textarea><label for="o">Notes</label><input id="o">
 <p class="note">No payment is taken online. We confirm price, stock and delivery by phone before the order is accepted. Items marked “Quote” are excluded from the total.</p><p id="er" style="color:#fca5a5;margin:0"></p>
@@ -16,15 +31,37 @@ const $=i=>document.getElementById(i),e=s=>String(s??'').replace(/[&<>"']/g,c=>(
 let P=[],C={},cat='',cart=JSON.parse(localStorage.getItem('asp_cart')||'{}');
 const save=()=>{localStorage.setItem('asp_cart',JSON.stringify(cart));$('cn').textContent=Object.values(cart).reduce((a,b)=>a+b,0)};
 const lim=p=>typeof p.stock==='number'?p.stock:99;
+let currentProduct=null;
+function addToCart(p){if(!p||lim(p)<1)return false;const count=cart[p.id]||0;if(count>=lim(p))return false;cart[p.id]=count+1;save();return true}
+function showProduct(p){
+ currentProduct=p;
+ const image=$('prodDetailImage');image.onerror=()=>{image.onerror=null;image.src='assets/pc-building.jpg'};image.src=p.image||'assets/pc-building.jpg';image.alt=p.name||'Product';
+ $('prodDetailCategory').textContent=p.category||'Tech product';
+ $('prodDetailName').textContent=p.name||'Product details';
+ $('prodDetailId').textContent=p.id?'Product code: '+p.id:'';
+ $('prodDetailPrice').textContent=p.price>0?inr(p.price):'Price on request';
+ $('prodDetailMrp').textContent=p.price>0&&p.mrp>p.price?'MRP '+inr(p.mrp):'';
+ $('prodDetailOff').textContent=p.price>0&&p.mrp>p.price?Math.round(100-p.price*100/p.mrp)+'% off':'';
+ $('prodDetailStock').textContent=typeof p.stock==='number'?(p.stock>0?p.stock+' in stock':'Out of stock'):'Availability confirmed before order';
+ $('prodDetailDescription').textContent=p.description||'No description provided.';
+ const add=$('prodDetailAdd');add.disabled=lim(p)<1;add.textContent=lim(p)<1?'Out of stock':'Add to cart';
+ $('prodDetail').showModal()
+}
 function draw(){const q=$('q').value.toLowerCase(),s=$('so').value;let a=P.filter(p=>(!cat||p.category===cat)&&(p.name+p.category+(p.description||'')).toLowerCase().includes(q));
  if(s==='a')a.sort((x,y)=>x.price-y.price);if(s==='d')a.sort((x,y)=>y.price-x.price);if(s==='n')a.sort((x,y)=>x.name.localeCompare(y.name));
- $('gr').innerHTML=a.length?a.map(p=>`<article class="card">${p.mrp>p.price&&p.price>0?`<span class="off">${Math.round(100-p.price*100/p.mrp)}% off</span>`:''}<img src="${e(p.image||'assets/pc-building.jpg')}" alt="${e(p.name)}" loading="lazy" onerror="this.src='assets/pc-building.jpg'"><div class="b"><h3>${e(p.name)}</h3><p>${e(p.description)}</p><div class="pr">${p.price>0?inr(p.price)+(p.mrp>p.price?`<s>${inr(p.mrp)}</s>`:''):'Quote'}</div>${lim(p)<1?'<span class="out">Out of stock</span>':''}<button class="btn" data-a="${e(p.id)}" ${lim(p)<1?'disabled':''}>Add to cart</button></div></article>`).join(''):'<p>No products match. Try another search or category.</p>';
- document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const p=P.find(x=>x.id===b.dataset.a);cart[p.id]=Math.min((cart[p.id]||0)+1,lim(p));save();b.textContent='Added ✓';setTimeout(()=>b.textContent='Add to cart',900)})}
+ $('gr').innerHTML=a.length?a.map(p=>`<article class="card" data-detail-card="${e(p.id)}">${p.mrp>p.price&&p.price>0?`<span class="off">${Math.round(100-p.price*100/p.mrp)}% off</span>`:''}<img src="${e(p.image||'assets/pc-building.jpg')}" alt="${e(p.name)}" loading="lazy" onerror="this.src='assets/pc-building.jpg'"><div class="b"><h3>${e(p.name)}</h3><p>${e(p.description)}</p><div class="pr">${p.price>0?inr(p.price)+(p.mrp>p.price?`<s>${inr(p.mrp)}</s>`:''):'Quote'}</div>${lim(p)<1?'<span class="out">Out of stock</span>':''}<div class="product-card-actions"><button type="button" class="btn g" data-d="${e(p.id)}">View details</button><button class="btn" data-a="${e(p.id)}" ${lim(p)<1?'disabled':''}>Add to cart</button></div></div></article>`).join(''):'<p>No products match. Try another search or category.</p>';
+ document.querySelectorAll('[data-detail-card]').forEach(card=>card.onclick=event=>{if(event.target.closest('button'))return;const p=P.find(x=>x.id===card.dataset.detailCard);if(p)showProduct(p)});
+ document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const p=P.find(x=>x.id===b.dataset.d);if(p)showProduct(p)});
+ document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const p=P.find(x=>x.id===b.dataset.a);if(!p)return;if(addToCart(p)){b.textContent='Added ✓';setTimeout(()=>b.textContent='Add to cart',900)}else{b.textContent='Limit reached';setTimeout(()=>b.textContent='Add to cart',900)}})}
 function chips(){const c=['',...new Set(P.map(p=>p.category))];$('ch').innerHTML=c.map(x=>`<button class="chip ${x===cat?'on':''}" data-c="${e(x)}">${e(x||'All')}</button>`).join('');document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{cat=b.dataset.c;chips();draw()})}
 const rows=()=>P.filter(p=>cart[p.id]),total=()=>rows().reduce((t,p)=>t+p.price*cart[p.id],0);
 function drawCart(){$('ci').innerHTML=rows().map(p=>`<div class="row"><div>${e(p.name)}<br><small>${p.price>0?inr(p.price):'Quote'}</small></div><div><button class="btn g" data-m="${e(p.id)}">−</button> ${cart[p.id]} <button class="btn g" data-p="${e(p.id)}">+</button></div></div>`).join('')||'<p>Your cart is empty.</p>';$('tt').textContent=inr(total());
  document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{if(--cart[b.dataset.m]<1)delete cart[b.dataset.m];save();drawCart()});document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const p=P.find(x=>x.id===b.dataset.p);cart[p.id]=Math.min(cart[p.id]+1,lim(p));save();drawCart()})}
-$('cb').onclick=()=>{drawCart();$('er').textContent='';dg.showModal()};$('cl').onclick=()=>dg.close();$('q').oninput=draw;$('so').onchange=draw;
+$('cb').onclick=()=>{drawCart();$('er').textContent='';dg.showModal()};$('cl').onclick=()=>dg.close();
+$('prodDetailClose').onclick=()=>$('prodDetail').close();$('prodDetailCloseBottom').onclick=()=>$('prodDetail').close();
+$('prodDetail').addEventListener('click',event=>{if(event.target===$('prodDetail'))$('prodDetail').close()});
+$('prodDetailAdd').onclick=()=>{if(!currentProduct)return;const button=$('prodDetailAdd');if(addToCart(currentProduct)){button.textContent='Added to cart ✓';setTimeout(()=>{if(currentProduct&&button.isConnected)button.textContent='Add to cart'},900)}else{button.textContent='Limit reached';setTimeout(()=>{if(button.isConnected)button.textContent='Add to cart'},900)}};
+$('q').oninput=draw;$('so').onchange=draw;
 $('po').onclick=async()=>{const r=rows(),n=$('n').value.trim(),p=$('p').value.replace(/\D/g,''),a=$('a').value.trim();
  if(C.open===false)return $('er').textContent='Orders are paused right now. Please call us.';if(!r.length)return $('er').textContent='Add a product first.';if(!n||p.length<10||!a)return $('er').textContent='Enter your name, a 10-digit phone number and a delivery address.';
  const o={id:'ASP'+Date.now().toString(36).toUpperCase(),created:Date.now(),status:'New',name:n,phone:p,address:a,notes:$('o').value.trim(),items:r.map(x=>({id:x.id,name:x.name,price:x.price,qty:cart[x.id]})),total:total()};
