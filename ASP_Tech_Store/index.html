@@ -1,86 +1,52 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ASP Tech Store | Salem PC Builds & Tech Support</title><meta name="description" content="Browse PC builds, components and local tech services from ASP Tech Store in Salem. Send an order request; confirm price and payment with us before buying.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Rajdhani:wght@600;700&display=swap"><link rel="stylesheet" href="../style.css"><link rel="stylesheet" href="../site-theme.css"></head><body data-theme="royal" data-mode="light"><script>try{const a=JSON.parse(localStorage.getItem("asp_site_appearance")||"null");if(a){document.body.dataset.theme=a.theme;document.body.dataset.mode=a.mode}}catch(e){}</script>
-<div id="ann" class="ann" hidden></div>
-<header><div class="w bar"><a class="logo" href="index.html" id="nm">ASP <b>TECH STORE</b></a><nav class="links" aria-label="Main navigation"><a href="../index.html">ASP Groups</a><a href="../tech.html">Tech Solutions</a><a class="current" href="./index.html">Store</a></nav><button class="btn" id="cb">Cart (<span id="cn">0</span>)</button></div></header>
-<section class="shophero"><div class="w"><span class="eyebrow">ASP TECH SOLUTIONS · SALEM</span><h1>Build your setup.<br>Get local support.</h1><p>Explore custom PC builds, computer parts and practical tech services. Send an order request and we will confirm availability, final pricing and delivery with you.</p><p style="margin-top:14px"><a class="btn" href="mailto:9996663210a@gmail.com">Ask ASP Tech Solutions</a></p></div></section>
-<main class="w"><div class="tools"><input id="q" type="search" placeholder="Search products" aria-label="Search products"><select id="so" aria-label="Sort"><option value="">Featured</option><option value="a">Price: low to high</option><option value="d">Price: high to low</option><option value="n">Name A–Z</option></select></div>
-<div class="chips" id="ch"></div><div class="grid" id="gr"></div></main>
-<dialog id="prodDetail" aria-labelledby="prodDetailName">
-<button type="button" id="prodDetailClose" class="product-detail-close" aria-label="Close product details">×</button>
-<div class="product-detail">
-<img id="prodDetailImage" class="product-detail-image" src="../assets/pc-building.jpg" alt="">
-<div class="product-detail-copy">
-<p id="prodDetailCategory" class="product-detail-category"></p>
-<h2 id="prodDetailName">Product details</h2>
-<p id="prodDetailId" class="product-detail-id"></p>
-<div class="product-detail-prices"><strong id="prodDetailPrice"></strong><del id="prodDetailMrp"></del><span id="prodDetailOff"></span></div>
-<p id="prodDetailStock" class="product-detail-stock"></p>
-<p id="prodDetailDescription" class="product-detail-description"></p>
-<div class="product-detail-actions"><button type="button" class="btn" id="prodDetailAdd">Add to cart</button><button type="button" class="btn g" id="prodDetailBuy">Buy now</button><button type="button" class="btn g" id="prodDetailCloseBottom">Close</button></div>
-<p class="product-detail-note">No payment is taken online. We confirm price and availability before accepting an order.</p>
-</div></div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#142c69">
+  <meta name="description" content="Browse PC builds, components and tech products at ASP Tech Store.">
+  <title>ASP Tech Store | Products</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header><div class="w bar"><a class="logo" href="./index.html">ASP <b>TECH STORE</b></a><nav class="links" aria-label="Store"><a class="current" href="./index.html">Products</a></nav><button class="btn" id="checkoutButton" type="button">Checkout (<span id="cartCount">0</span>)</button></div></header>
+<section class="shophero"><div class="w"><span class="eyebrow">ASP TECH STORE</span><h1>PCs, parts &amp; accessories</h1><p>Browse products, compare details and continue to the separate checkout page for delivery and payment options.</p></div></section>
+<main class="w">
+  <div class="tools"><input id="searchInput" type="search" placeholder="Search products" aria-label="Search products"><select id="sortSelect" aria-label="Sort products"><option value="featured">Featured</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="name">Name A–Z</option></select></div>
+  <div class="chips" id="categories"></div>
+  <p id="resultCount" aria-live="polite">Loading products…</p>
+  <div class="grid" id="productGrid"></div>
+</main>
+<dialog id="productDialog" aria-labelledby="productName">
+  <button type="button" class="product-detail-close" id="closeProduct" aria-label="Close product details">×</button>
+  <div class="product-detail"><img id="productImage" class="product-detail-image" src="../assets/pc-building.jpg" alt="">
+    <div class="product-detail-copy"><p id="productCategory" class="product-detail-category"></p><h2 id="productName">Product details</h2>
+      <div class="product-detail-prices"><strong id="productPrice"></strong><del id="productMrp"></del></div><p id="productStock" class="product-detail-stock"></p><p id="productDescription" class="product-detail-description"></p>
+      <div class="product-detail-actions"><button class="btn" id="detailAdd" type="button">Add to cart</button><button class="btn g" id="detailBuy" type="button">Buy now</button></div>
+    </div>
+  </div>
 </dialog>
-<dialog id="customerAuth"><button type="button" class="product-detail-close" id="authClose" aria-label="Close">×</button><h2>Email sign-in</h2><p>Create an account and verify your email before placing an order request.</p><label for="authEmail">Email address</label><input id="authEmail" type="email" autocomplete="email" required><label for="authPassword">Password (at least 8 characters)</label><input id="authPassword" type="password" minlength="8" autocomplete="current-password" required><p style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" id="authSignIn">Sign in</button><button type="button" class="btn g" id="authCreate">Create account</button><button type="button" class="btn g" id="authResend" hidden>Resend verification</button><button type="button" class="btn g" id="authRefresh" hidden>I verified my email</button></p><p id="authMessage" role="status"></p></dialog><dialog id="dg"><h2>Your cart</h2><div id="ci"></div><div class="row"><b>Total</b><b id="tt"></b></div>
-<label for="n">Name</label><input id="n" autocomplete="name" maxlength="100" required><label for="p">Phone / WhatsApp</label><input id="p" type="tel" autocomplete="tel" maxlength="20" required><label for="oe">Email address</label><input id="oe" type="email" autocomplete="email" required><label for="a">Delivery address</label><textarea id="a" rows="3" maxlength="500" autocomplete="street-address" required></textarea><label for="o">Notes</label><input id="o" maxlength="1000">
-<p class="note">This is an order request, not a payment. We will confirm stock, final price, delivery and payment method with you before accepting it. Items marked “Quote” are excluded from the total.</p><p id="er" style="color:#fca5a5;margin:0"></p>
-<p style="display:flex;gap:8px;justify-content:flex-end"><button class="btn g" id="cl">Close</button><button class="btn" id="po">Place order</button></p></dialog>
-<dialog id="ok"><h2>Order placed</h2><p>Your order number is <b id="oid"></b>. We will call you to confirm.</p><p style="display:flex;gap:8px;justify-content:flex-end"><a class="btn g" id="wa" target="_blank" rel="noopener">Send on WhatsApp</a><button class="btn" onclick="ok.close()">Done</button></p></dialog>
+<footer class="w" style="padding:22px 20px 32px;border-top:1px solid var(--ln)"><div class="row"><span>ASP Tech Store</span><a href="mailto:9996663210a@gmail.com">Contact</a><a href="./admin.html">Admin sign in</a></div></footer>
 <script type="module">
-import*as S from '../store.js';
-import {watchUser,signInCustomer,createCustomer,sendCustomerVerification,refreshCustomer,signOutCustomer} from './customer-auth.js';
-const $=i=>document.getElementById(i),asset=v=>!v?'../assets/pc-building.jpg':(/^https?:|^data:|^blob:/.test(v)?v:(v.startsWith('assets/')?'../'+v:v)),e=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),inr=n=>'₹'+Number(n).toLocaleString('en-IN');
-let P=[],C={},cat='',cart=JSON.parse(localStorage.getItem('asp_cart')||'{}');let buyNowProduct=null,customerUser=null,pendingCheckout=false;
-const save=()=>{localStorage.setItem('asp_cart',JSON.stringify(cart));$('cn').textContent=Object.values(cart).reduce((a,b)=>a+b,0)};
-const lim=p=>typeof p.stock==='number'?p.stock:99;
-let currentProduct=null;
-function addToCart(p){if(!p||lim(p)<1)return false;const count=cart[p.id]||0;if(count>=lim(p))return false;cart[p.id]=count+1;save();return true}
-function beginBuyNow(p){
- if(!p||lim(p)<1)return;
- buyNowProduct=p;drawCart();$('er').textContent='';
- if($('prodDetail').open)$('prodDetail').close();
- $('dg').showModal()
-}
-function showProduct(p){
- currentProduct=p;
- const image=$('prodDetailImage');image.onerror=()=>{image.onerror=null;image.src='../assets/pc-building.jpg'};image.src=asset(p.image);image.alt=p.name||'Product';
- $('prodDetailCategory').textContent=p.category||'Tech product';
- $('prodDetailName').textContent=p.name||'Product details';
- $('prodDetailId').textContent=p.id?'Product code: '+p.id:'';
- $('prodDetailPrice').textContent=p.price>0?inr(p.price):'Price on request';
- $('prodDetailMrp').textContent=p.price>0&&p.mrp>p.price?'MRP '+inr(p.mrp):'';
- $('prodDetailOff').textContent=p.price>0&&p.mrp>p.price?Math.round(100-p.price*100/p.mrp)+'% off':'';
- $('prodDetailStock').textContent=typeof p.stock==='number'?(p.stock>0?p.stock+' in stock':'Out of stock'):'Availability confirmed before order';
- $('prodDetailDescription').textContent=p.description||'No description provided.';
- const add=$('prodDetailAdd');add.disabled=lim(p)<1;add.textContent=lim(p)<1?'Out of stock':'Add to cart';
- const buy=$('prodDetailBuy');buy.disabled=lim(p)<1;buy.textContent=lim(p)<1?'Out of stock':'Buy now';
- $('prodDetail').showModal()
-}
-function draw(){const q=$('q').value.toLowerCase(),s=$('so').value;let a=P.filter(p=>(!cat||p.category===cat)&&(p.name+p.category+(p.description||'')).toLowerCase().includes(q));
- if(s==='a')a.sort((x,y)=>x.price-y.price);if(s==='d')a.sort((x,y)=>y.price-x.price);if(s==='n')a.sort((x,y)=>x.name.localeCompare(y.name));
- $('gr').innerHTML=a.length?a.map(p=>`<article class="card" data-detail-card="${e(p.id)}">${p.mrp>p.price&&p.price>0?`<span class="off">${Math.round(100-p.price*100/p.mrp)}% off</span>`:''}<img src="${e(asset(p.image))}" alt="${e(p.name)}" loading="lazy" onerror="this.src='../assets/pc-building.jpg'"><div class="b"><h3>${e(p.name)}</h3><p>${e(p.description)}</p><div class="pr">${p.price>0?inr(p.price)+(p.mrp>p.price?`<s>${inr(p.mrp)}</s>`:''):'Quote'}</div>${lim(p)<1?'<span class="out">Out of stock</span>':''}<div class="product-card-actions"><button type="button" class="btn g" data-d="${e(p.id)}">View details</button><button class="btn" data-a="${e(p.id)}" ${lim(p)<1?'disabled':''}>Add to cart</button><button class="btn g" data-buy="${e(p.id)}" ${lim(p)<1?'disabled':''}>Buy now</button></div></div></article>`).join(''):'<p>No products match. Try another search or category.</p>';
- document.querySelectorAll('[data-detail-card]').forEach(card=>card.onclick=event=>{if(event.target.closest('button'))return;const p=P.find(x=>x.id===card.dataset.detailCard);if(p)showProduct(p)});
- document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const p=P.find(x=>x.id===b.dataset.d);if(p)showProduct(p)});
- document.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{const p=P.find(x=>x.id===b.dataset.buy);beginBuyNow(p)});
- document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const p=P.find(x=>x.id===b.dataset.a);if(!p)return;if(addToCart(p)){b.textContent='Added ✓';setTimeout(()=>b.textContent='Add to cart',900)}else{b.textContent='Limit reached';setTimeout(()=>b.textContent='Add to cart',900)}})}
-function chips(){const c=['',...new Set(P.map(p=>p.category))];$('ch').innerHTML=c.map(x=>`<button class="chip ${x===cat?'on':''}" data-c="${e(x)}">${e(x||'All')}</button>`).join('');document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{cat=b.dataset.c;chips();draw()})}
-const rows=()=>buyNowProduct?[buyNowProduct]:P.filter(p=>cart[p.id]),total=()=>rows().reduce((t,p)=>t+p.price*(buyNowProduct?1:cart[p.id]),0);
-function drawCart(){$('ci').innerHTML=rows().map(p=>`<div class="row"><div>${e(p.name)}<br><small>${p.price>0?inr(p.price):'Quote'}</small></div><div>${buyNowProduct ? "1" : '<button class="btn g" data-m="'+e(p.id)+'">−</button> '+cart[p.id]+' <button class="btn g" data-p="'+e(p.id)+'">+</button>'}</div></div>`).join('')||'<p>Your cart is empty.</p>';$('tt').textContent=inr(total());
- document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{if(--cart[b.dataset.m]<1)delete cart[b.dataset.m];save();drawCart()});document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const p=P.find(x=>x.id===b.dataset.p);cart[p.id]=Math.min(cart[p.id]+1,lim(p));save();drawCart()})}
-$('cb').onclick=()=>{drawCart();$('er').textContent='';dg.showModal()};$('cl').onclick=()=>{dg.close();buyNowProduct=null};
-$('dg').addEventListener('cancel',()=>{buyNowProduct=null});
-$('prodDetailClose').onclick=()=>$('prodDetail').close();$('prodDetailCloseBottom').onclick=()=>$('prodDetail').close();
-$('prodDetail').addEventListener('click',event=>{if(event.target===$('prodDetail'))$('prodDetail').close()});
-$('prodDetailAdd').onclick=()=>{if(!currentProduct)return;const button=$('prodDetailAdd');if(addToCart(currentProduct)){button.textContent='Added to cart ✓';setTimeout(()=>{if(currentProduct&&button.isConnected)button.textContent='Add to cart'},900)}else{button.textContent='Limit reached';setTimeout(()=>{if(button.isConnected)button.textContent='Add to cart'},900)}};
-$('prodDetailBuy').onclick=()=>beginBuyNow(currentProduct);
-$('q').oninput=draw;$('so').onchange=draw;
-$('customerAccount').onclick=()=>{if(customerUser?.emailVerified){if(confirm('Sign out of your store account?'))signOutCustomer()}else $('customerAuth').showModal()};$('authClose').onclick=()=>$('customerAuth').close();watchUser(u=>{customerUser=u;$('customerAccount').textContent=u?.emailVerified?'Account · '+u.email:'Sign in to order';if(u?.email){$('oe').value=u.email;$('authEmail').value=u.email}if(u?.emailVerified&&pendingCheckout){pendingCheckout=false;$('authMessage').textContent='Email verified. You can place your order request.';$('authResend').hidden=true;$('authRefresh').hidden=true;$('customerAuth').close()}});$('authSignIn').onclick=async()=>{try{const u=await signInCustomer($('authEmail').value.trim(),$('authPassword').value);if(!u.emailVerified){$('authMessage').textContent='Please verify your email first. Resend the verification email, then refresh verification here.';$('authResend').hidden=false;$('authRefresh').hidden=false}else $('customerAuth').close()}catch(err){$('authMessage').textContent=err.message||'Could not sign in.'}};$('authCreate').onclick=async()=>{try{await createCustomer($('authEmail').value.trim(),$('authPassword').value);$('authMessage').textContent='Account created. Open the verification email, then return and press “I verified my email”.';$('authResend').hidden=false;$('authRefresh').hidden=false}catch(err){$('authMessage').textContent=err.message||'Could not create account.'}};$('authResend').onclick=async()=>{try{await sendCustomerVerification();$('authMessage').textContent='Verification email sent again.'}catch(err){$('authMessage').textContent=err.message||'Could not send verification email.'}};$('authRefresh').onclick=async()=>{try{customerUser=await refreshCustomer();if(customerUser?.emailVerified){$('authMessage').textContent='Email verified. You can place your order request.';$('customerAuth').close();$('authResend').hidden=true;$('authRefresh').hidden=true}else $('authMessage').textContent='Email is not verified yet. Open the verification link first.'}catch(err){$('authMessage').textContent=err.message||'Could not refresh verification status.'}};window.addEventListener('focus',async()=>{if(customerUser&&!customerUser.emailVerified){try{customerUser=await refreshCustomer();if(customerUser?.emailVerified){$('customerAccount').textContent='Account · '+customerUser.email;$('authMessage').textContent='Email verified. You can place your order request.';$('authResend').hidden=true;$('authRefresh').hidden=true}}catch{}}});
-$('po').onclick=async()=>{if(!customerUser||!customerUser.emailVerified){pendingCheckout=true;$('authEmail').value=customerUser?.email||$('oe').value.trim();$('authMessage').textContent=customerUser?'Verify your email, then return here and press “I verified my email”.':'Sign in or create an account with your email to continue.';$('customerAuth').showModal();$('authResend').hidden=!customerUser;$('authRefresh').hidden=!customerUser;return}const r=rows(),n=$('n').value.trim(),p=$('p').value.replace(/\D/g,''),a=$('a').value.trim(),email=customerUser.email||$('oe').value.trim();
- if(C.open===false)return $('er').textContent='Orders are paused right now. Please call us.';if(!r.length)return $('er').textContent='Add a product first.';if(!n||p.length<10||p.length>15||!a||!email)return $('er').textContent='Enter your name, a 10–15 digit phone number, email and delivery address.';if(email.toLowerCase()!==customerUser.email.toLowerCase())return $('er').textContent='Use the email address verified for your store account.';if(r.length>30)return $('er').textContent='An order can contain up to 30 different products.';
- const o={id:'ASP'+Date.now().toString(36).toUpperCase(),created:Date.now(),status:'New',name:n,phone:p,address:a,notes:(['Customer email: '+email,$('o').value.trim()].filter(Boolean).join(' | ')),items:r.map(x=>({id:x.id,name:x.name,price:x.price,qty:buyNowProduct?1:cart[x.id]})),total:total()};
- $('po').disabled=true;try{await S.placeOrder(o)}catch(x){$('po').disabled=false;return $('er').textContent='Could not place the order. Check your connection and try again.'}
- const m='Order '+o.id+'\n'+o.items.map(i=>i.name+' x'+i.qty).join('\n')+'\nTotal: '+inr(o.total)+'\n'+n+' · '+p;$('wa').href='https://wa.me/'+(C.whatsapp||'919488241710')+'?text='+encodeURIComponent(m);
- if(!buyNowProduct){cart={};save()}buyNowProduct=null;$('po').disabled=false;dg.close();$('oid').textContent=o.id;ok.showModal()};
-(async()=>{C=await S.settings();P=(await S.products()).filter(p=>p.active!==false);
- if(C.accent)document.documentElement.style.setProperty('--catalog-accent',C.accent);if(C.banner){$('ann').textContent=C.banner;$('ann').hidden=false}
- save();chips();draw()})();
-</script><footer class="w" style="padding:22px 20px 32px;border-top:1px solid var(--ln)"><div class="row"><span>ASP Tech Solutions · Salem</span><a href="mailto:9996663210a@gmail.com">9996663210a@gmail.com</a><a href="./admin.html">Store admin sign in</a></div><small style="color:var(--mu)">Order requests are confirmed by ASP Tech Solutions before dispatch. Payment integration will be added in a later step.</small></footer><script type="module" src="../site-theme.js"></script></body></html>
+import * as S from '../store.js';
+const $=id=>document.getElementById(id);
+const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=value=>'₹'+Number(value||0).toLocaleString('en-IN');
+const imageSrc=value=>!value?'../assets/pc-building.jpg':(/^https?:|^data:|^blob:/.test(value)?value:(value.startsWith('assets/')?'../'+value:value));
+let products=[],category='All',selected=null,cart=JSON.parse(localStorage.getItem('asp_cart')||'{}');
+const stockLimit=p=>p.stock==null?Infinity:Number(p.stock);
+function saveCart(){localStorage.setItem('asp_cart',JSON.stringify(cart));const count=Object.values(cart).reduce((sum,n)=>sum+Number(n||0),0);$('cartCount').textContent=String(count);$('checkoutButton').disabled=count===0}
+function addToCart(p){if(!p||stockLimit(p)<1)return;const qty=Number(cart[p.id]||0);if(qty>=stockLimit(p))return;cart[p.id]=qty+1;saveCart()}
+function goCheckout(){if(Object.values(cart).reduce((s,n)=>s+Number(n||0),0)>0)location.href='./checkout.html'}
+function buyNow(p){if(!p||stockLimit(p)<1)return;cart={[p.id]:1};saveCart();goCheckout()}
+function showProduct(p){selected=p;$('productImage').src=imageSrc(p.image);$('productImage').alt=p.name||'Product';$('productCategory').textContent=p.category||'Product';$('productName').textContent=p.name||'Product';$('productPrice').textContent=Number(p.price)>0?money(p.price):'Price on request';$('productMrp').textContent=Number(p.mrp)>Number(p.price)?'MRP '+money(p.mrp):'';$('productStock').textContent=p.stock==null?'Availability confirmed before order':Number(p.stock)>0?Number(p.stock)+' in stock':'Out of stock';$('productDescription').textContent=p.description||'';$('detailAdd').disabled=stockLimit(p)<1;$('detailBuy').disabled=stockLimit(p)<1;$('productDialog').showModal()}
+function draw(){const term=$('searchInput').value.trim().toLowerCase(),sort=$('sortSelect').value;let rows=products.filter(p=>(category==='All'||p.category===category)&&[p.name,p.category,p.description].join(' ').toLowerCase().includes(term));if(sort==='low')rows.sort((a,b)=>Number(a.price)-Number(b.price));if(sort==='high')rows.sort((a,b)=>Number(b.price)-Number(a.price));if(sort==='name')rows.sort((a,b)=>String(a.name).localeCompare(String(b.name)));$('resultCount').textContent=rows.length+' '+(rows.length===1?'product':'products');$('productGrid').innerHTML=rows.length?rows.map(p=>'<article class="card"><button type="button" class="product-image-open" data-detail="'+esc(p.id)+'"><img src="'+esc(imageSrc(p.image))+'" alt="'+esc(p.name)+'" loading="lazy" onerror="this.src=\'../assets/pc-building.jpg\'"></button><div class="b"><h3>'+esc(p.name)+'</h3><p>'+esc(p.description||'')+'</p><div class="pr">'+(Number(p.price)>0?money(p.price):'Quote')+(Number(p.mrp)>Number(p.price)?'<s>'+money(p.mrp)+'</s>':'')+'</div><div class="product-card-actions"><button class="btn g" type="button" data-detail="'+esc(p.id)+'">Details</button><button class="btn" type="button" data-add="'+esc(p.id)+'" '+(stockLimit(p)<1?'disabled':'')+'>Add</button><button class="btn g" type="button" data-buy="'+esc(p.id)+'" '+(stockLimit(p)<1?'disabled':'')+'>Buy now</button></div></div></article>').join(''):'<p>No products match your search.</p>';document.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>{const p=products.find(x=>x.id===b.dataset.detail);if(p)showProduct(p)});document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>addToCart(products.find(x=>x.id===b.dataset.add)));document.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>buyNow(products.find(x=>x.id===b.dataset.buy)))}
+function drawCategories(){const names=['All',...new Set(products.map(p=>p.category).filter(Boolean))];$('categories').innerHTML=names.map(name=>'<button class="chip '+(name===category?'on':'')+'" type="button" data-category="'+esc(name)+'">'+esc(name)+'</button>').join('');document.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>{category=b.dataset.category;drawCategories();draw()})}
+$('searchInput').addEventListener('input',draw);$('sortSelect').addEventListener('change',draw);$('checkoutButton').addEventListener('click',goCheckout);$('closeProduct').onclick=()=>$('productDialog').close();$('detailAdd').onclick=()=>{if(selected)addToCart(selected)};$('detailBuy').onclick=()=>buyNow(selected);$('productDialog').addEventListener('click',e=>{if(e.target===$('productDialog'))$('productDialog').close()});
+try{products=(await S.products()).filter(p=>p.active!==false);drawCategories();draw();saveCart()}catch(error){console.error(error);$('resultCount').textContent='Catalogue temporarily unavailable. Please refresh or contact the store.'}
+</script>
+</body>
+</html>
